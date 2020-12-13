@@ -1,7 +1,4 @@
-import data.Book;
-import service.BookService;
-
-import java.util.List;
+import service.BorrowerService;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -17,8 +14,10 @@ public class Main {
 //        BorrowerService.update(borrower);
 //        System.out.println(BorrowerService.reserveBook(1000,1));
 //        System.out.println(BorrowerService.borrowBook(1000,1));
-       List<Book> bookList= BookService.findOnWord("罗贯中",1,10);
-       System.out.println(bookList.get(0).getAuthor());
+//       List<Book> bookList= BookService.findOnWord(null,null,"罗贯中",null,1,10);
+//       System.out.println(bookList.get(0).getAuthor());
+        System.out.println(BorrowerService.getBorrow(1000,1).size());
+
 
     }
 

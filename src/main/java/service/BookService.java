@@ -66,37 +66,83 @@ public class BookService {
 
     }
     /*
-    根据输入的关键字来查找书籍，关键字为图书类别或者书籍title,作者
+    根据输入的关键字来查找书籍，关键字为图书类别或者书籍category,title,author,IBSN
     其中pageNumber为显示的第页码（从1起)，pageSize为每页的显示条数
      */
-    public static List<Book> findOnWord(String word,int pageNumber,int pageSize)
+    public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber,int pageSize)
     {
         int startIndex=(pageNumber-1)*pageSize;
-        String query="select * from book where"+getLike("title",word)+"or"+getLike("author",word)+"or"+getLike("" +
-                "category",word)+" order by book_id limit "+startIndex+","+pageSize;
-
-        try {
-            List<Book> bookList =AfSimpleDB.query(query,Book.class);
-            return bookList;
-        } catch (Exception e) {
-            e.printStackTrace();
+        String query="select * from book where";
+        StringBuffer where=new StringBuffer("");
+        if(IBSN!=null){
+            where.append(getLike("IBSN",IBSN));
+            where.append("and");
+ 
+        }
+        if(title!=null){
+           where.append(getLike("title",title));
+           where.append("and");
+        }
+        if(autuor!=null){
+            where.append(getLike("author",autuor));
+            where.append("and");
+        }
+        if(category!=null){
+            where.append(getLike("category",category));
+            where.append("and");
+        }
+        int len=where.length();
+        if(len>0){
+            where.delete(len-3,len);
+            query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
+            System.out.println(query);
+            try {
+                List<Book> bookList =AfSimpleDB.query(query,Book.class);
+                return bookList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return  null;
     }
-    public static List<Book> findOnWord(String word,int pageNumber)
+    public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber)
     {
         int pageSize= LibrarySystem.bookPageSize;
         int startIndex=(pageNumber-1)*pageSize;
-        String query="select * from book where"+getLike("title",word)+"or"+getLike("author",word)+"or"+getLike("" +
-                "category",word)+" order by book_id limit "+startIndex+","+pageSize;
-        try {
-            List<Book> bookList =AfSimpleDB.query(query,Book.class);
-            return bookList;
-        } catch (Exception e) {
-            e.printStackTrace();
+        String query="select * from book where";
+        StringBuffer where=new StringBuffer("");
+        if(IBSN!=null){
+            where.append(getLike("IBSN",IBSN));
+            where.append("and");
+
+        }
+        if(title!=null){
+            where.append(getLike("title",title));
+            where.append("and");
+        }
+        if(autuor!=null){
+            where.append(getLike("author",autuor));
+            where.append("and");
+        }
+        if(category!=null){
+            where.append(getLike("category",category));
+            where.append("and");
+        }
+        int len=where.length();
+        if(len>0){
+            where.delete(len-3,len);
+            query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
+            System.out.println(query);
+            try {
+                List<Book> bookList =AfSimpleDB.query(query,Book.class);
+                return bookList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return  null;
     }
+
     public  static  String getLike(String column,String word)
     {
         String filter="%"+word+"%";

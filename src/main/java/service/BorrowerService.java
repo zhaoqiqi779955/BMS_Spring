@@ -124,11 +124,14 @@ public class BorrowerService {
 
     }
     /*
-    获取指定借阅者id的预约记录
+    获取指定借阅者id的预约记录,pageNumber为展示第几页，默认每页10条记录
      */
-    public static List<Reservation>   getReservation(int borrower_id){
-        String sql="call getReservation("+borrower_id+")";
+    public static List<Reservation>   getReservation(int borrower_id,int pageNumber){
+        int pageSize=LibrarySystem.recordPageSize;
+        int start=(pageNumber-1)*pageSize;
+        String sql="call getReservation("+borrower_id+ ","+start+","+pageSize+")";
         try {
+            System.out.println(sql);
             return  AfSimpleDB.query(sql,Reservation.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,10 +139,12 @@ public class BorrowerService {
         return null;
     }
     /*
-    根据借阅者id获取其借书记录
+    根据借阅者id获取其借书记录，pageNumber为展示第几页
      */
-    public  static List<Borrow> getBorrow(int borrower_id){
-        String sql="call getBorrow("+borrower_id+")";
+    public  static List<Borrow> getBorrow(int borrower_id,int pageNumber){
+        int pageSize=LibrarySystem.recordPageSize;
+        int start=(pageNumber-1)*pageSize;
+        String sql="call getBorrow("+borrower_id+","+start+","+pageSize+")";
         try {
             return  AfSimpleDB.query(sql,Borrow.class);
         } catch (Exception e) {
