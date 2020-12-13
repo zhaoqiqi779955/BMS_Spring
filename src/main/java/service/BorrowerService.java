@@ -8,6 +8,9 @@ import utility.database.SqlUpdate;
 import java.util.List;
 
 public class BorrowerService {
+    /*
+    根据id判断用户是否存在
+     */
     public static boolean isExistent(int id){
         String query="select borrower_id from borrower where borrower_id="+id;
         try {
