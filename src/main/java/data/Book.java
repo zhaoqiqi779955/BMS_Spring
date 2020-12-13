@@ -8,14 +8,30 @@ import af.sql.annotation.AFTABLE;
 public class Book {
     private Integer book_id;
     private String title;
-    private Integer totalNum;
-    private Integer presentNum;
+    private Byte totalNum;
+    private Byte presentNum;
     private String author;
     private String category;
     private Integer price;
     private String path;
     private String ISBN;
     private String description;
+
+    public Byte getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(Byte totalNum) {
+        this.totalNum = totalNum;
+    }
+
+    public Byte getPresentNum() {
+        return presentNum;
+    }
+
+    public void setPresentNum(Byte presentNum) {
+        this.presentNum = presentNum;
+    }
 
     public Integer getBook_id() {
         return book_id;
@@ -33,21 +49,7 @@ public class Book {
         this.title = title;
     }
 
-    public Integer getTotalNum() {
-        return totalNum;
-    }
 
-    public void setTotalNum(Integer totalNum) {
-        this.totalNum = totalNum;
-    }
-
-    public Integer getPresentNum() {
-        return presentNum;
-    }
-
-    public void setPresentNum(Integer presentNum) {
-        this.presentNum = presentNum;
-    }
 
     public String getAuthor() {
         return author;

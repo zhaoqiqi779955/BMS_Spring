@@ -3,22 +3,22 @@ package data;
 import af.sql.annotation.AFCOLUMNS;
 import af.sql.annotation.AFTABLE;
 
-import java.sql.Date;
+import java.util.Date;
 @AFTABLE(name="borrower")
 @AFCOLUMNS(generated="borrower_id")
 public class Borrower {
     private Integer borrower_id;
     private String name;
-    private Integer sex;
+    private Boolean sex;
     private Date birth;
     private String adr;
     private String path;
     private String tel;
     private String pw;
     private String badRecord;
-    private Integer level;
-    private Integer maxBook;
-    private Integer borrowedNum;
+    private Byte level;
+    private Byte maxBook;
+    private Byte borrowedNum;
 
     public Integer getBorrower_id() {
         return borrower_id;
@@ -36,11 +36,11 @@ public class Borrower {
         this.name = name;
     }
 
-    public Integer getSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
@@ -92,27 +92,27 @@ public class Borrower {
         this.badRecord = badRecord;
     }
 
-    public Integer getLevel() {
+    public Byte getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(Byte level) {
         this.level = level;
     }
 
-    public Integer getMaxBook() {
+    public Byte getMaxBook() {
         return maxBook;
     }
 
-    public void setMaxBook(Integer maxBook) {
+    public void setMaxBook(Byte maxBook) {
         this.maxBook = maxBook;
     }
 
-    public Integer getBorrowedNum() {
+    public Byte getBorrowedNum() {
         return borrowedNum;
     }
 
-    public void setBorrowedNum(Integer borrowedNum) {
+    public void setBorrowedNum(Byte borrowedNum) {
         this.borrowedNum = borrowedNum;
     }
 }

@@ -9,19 +9,18 @@ public class PojoCreator4j {
         /**
          * 将Navicat软件打开，打开一个数据表，点开右侧的DDL，复制其中的sql语句，运行本代码即可获取其pojo类
          */
-        String text = "CREATE TABLE `borrow` (\n" +
-                "  `borrow_id` int(11) NOT NULL,\n" +
-                "  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+        String text = "CREATE TABLE `reservation` (\n" +
+                "  `reservation_id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                "  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,\n" +
                 "  `borrower_id` int(11) DEFAULT NULL,\n" +
                 "  `book_id` int(11) DEFAULT NULL,\n" +
-                "  `expire` datetime DEFAULT NULL,\n" +
-                "  `return` bit(4) DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`borrow_id`),\n" +
-                "  KEY `fk_Borrow_Borrower_idx` (`borrower_id`),\n" +
-                "  KEY `fk_Borrow_Book1_idx` (`book_id`),\n" +
-                "  CONSTRAINT `fk_Borrow_Book1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
-                "  CONSTRAINT `fk_Borrow_Borrower` FOREIGN KEY (`borrower_id`) REFERENCES `borrower` (`borrower_id`) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+                "  `expire` timestamp NULL DEFAULT NULL,\n" +
+                "  PRIMARY KEY (`reservation_id`),\n" +
+                "  KEY `fk_Reservation_Borrower1_idx` (`borrower_id`),\n" +
+                "  KEY `fk_Reservation_Book1_idx` (`book_id`),\n" +
+                "  CONSTRAINT `fk_Reservation_Borrower1` FOREIGN KEY (`borrower_id`) REFERENCES `borrower` (`borrower_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
+                "  CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;";
 
         RegUtis();//加载初始化集合
         Matcher m = patternCompile.matcher(text); //具体匹配内容格式：「tel` varchar」
