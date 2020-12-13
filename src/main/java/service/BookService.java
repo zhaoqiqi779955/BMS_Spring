@@ -8,15 +8,28 @@ import utility.database.SqlUpdate;
 import java.util.List;
 
 public class BookService {
+    public  static  boolean isExistent(int id)
+    {
+        String query="select book_id from book where book_id="+id;
+        try {
+            String [] result=AfSimpleDB.get(query);
+            if(result==null) return  false;
+            else return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
     /*
     向数据库添加一本书
      */
-    public static void add(Book book)
+    public static boolean add(Book book)
     {
         try {
             AfSimpleDB.insert(book);
+            return  true;
         } catch (Exception e) {
-            e.printStackTrace();
+           return false;
         }
     }
 /*
@@ -71,23 +84,27 @@ public class BookService {
      */
     public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber,int pageSize)
     {
+        title=title.trim();
+        category=category.trim();
+        autuor=autuor.trim();
+        IBSN=IBSN.trim();
         int startIndex=(pageNumber-1)*pageSize;
         String query="select * from book where";
         StringBuffer where=new StringBuffer("");
-        if(IBSN!=null){
+        if(IBSN!=null&&!IBSN.equals("")){
             where.append(getLike("IBSN",IBSN));
             where.append("and");
- 
+
         }
-        if(title!=null){
-           where.append(getLike("title",title));
-           where.append("and");
+        if(title!=null&&!title.equals("")){
+            where.append(getLike("title",title));
+            where.append("and");
         }
-        if(autuor!=null){
+        if(autuor!=null&&!title.equals("")){
             where.append(getLike("author",autuor));
             where.append("and");
         }
-        if(category!=null){
+        if(category!=null&&!category.equals("")){
             where.append(getLike("category",category));
             where.append("and");
         }
@@ -108,23 +125,27 @@ public class BookService {
     public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber)
     {
         int pageSize= LibrarySystem.bookPageSize;
+        title=title.trim();
+        category=category.trim();
+        autuor=autuor.trim();
+        IBSN=IBSN.trim();
         int startIndex=(pageNumber-1)*pageSize;
         String query="select * from book where";
         StringBuffer where=new StringBuffer("");
-        if(IBSN!=null){
+        if(IBSN!=null&&!IBSN.equals("")){
             where.append(getLike("IBSN",IBSN));
             where.append("and");
 
         }
-        if(title!=null){
+        if(title!=null&&!title.equals("")){
             where.append(getLike("title",title));
             where.append("and");
         }
-        if(autuor!=null){
+        if(autuor!=null&&!title.equals("")){
             where.append(getLike("author",autuor));
             where.append("and");
         }
-        if(category!=null){
+        if(category!=null&&!category.equals("")){
             where.append(getLike("category",category));
             where.append("and");
         }

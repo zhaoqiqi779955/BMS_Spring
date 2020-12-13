@@ -10,12 +10,24 @@ public class AdminService {
     public static Admin createAdmin(){
         return  new Admin();
     }
-    public static void add(Admin admin)
+    public static boolean isExistent(int id){
+        String query="select admin_id from admin where admin_id="+id;
+        try {
+            String [] result=AfSimpleDB.get(query);
+            if(result==null) return  false;
+            else return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public static boolean add(Admin admin)
     {
         try {
             AfSimpleDB.insert(admin);
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
     }
     public static void update(Admin admin){

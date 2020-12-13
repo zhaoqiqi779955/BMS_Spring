@@ -8,6 +8,17 @@ import utility.database.SqlUpdate;
 import java.util.List;
 
 public class BorrowerService {
+    public static boolean isExistent(int id){
+        String query="select borrower_id from borrower where borrower_id="+id;
+        try {
+            String[] result=AfSimpleDB.get(query);
+            if(result==null) return  false;
+            else return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
     /*
     获取指定id的borrower对象
      */
@@ -22,13 +33,14 @@ public class BorrowerService {
         return  null;
     }
     /*
-    项数据库添加一个borrower
+    项数据库添加一个borrower,返回为true表示添加成功
      */
-    public static void add(Borrower borrower){
+    public static boolean add(Borrower borrower){
         try {
             AfSimpleDB.insert(borrower);
+            return  true;
         } catch (Exception e) {
-            e.printStackTrace();
+            return  false;
         }
     }
     /*
