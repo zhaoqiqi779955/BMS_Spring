@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title> 图书管理系统 </title>
+		
+		<script th:src="@{/js/jquery.min.js}" ></script>
+		<script th:src="@{/js/afquery.js}" ></script>
+		<link rel="stylesheet" th:href="@{/css/common.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />	
+		
+		<!-- layer.js 对话框API -->	
+		<script th:src="@{/layer/layer.js}" ></script>
+		
+		<style>
+			.banner{
+				padding: 10px;
+				border-bottom: 1px solid #f1f1f1;
+				background: linear-gradient(to bottom, #d0e7f7 0%, #fbfcfd 50%);
+			}
+			.main{
+				position: relative;
+				padding: 10px;
+				min-height: 600px;				
+			}
+			
+		</style>
+
+
+	</head>
+	<body th:background="@{/img/background.png}">
+		<div class='banner'>
+			图书管理系统
+		</div>
+		<div class="loginContainer center" >
+			<div class='form' style='padding: 40px;'>
+				<div class='pad' style='margin-bottom: 30px;font-size:110%'>
+					Admin 账 号 密 码 登 录
+				</div>
+				<div class='pad'>
+					<input class='username' type='text' placeholder="账号">
+				</div>
+				<div class='pad'>
+
+					<input class='password' type='password' placeholder="密码">
+				</div>
+				<div class="pad">
+					<img th:src="@{/code}" th:id="identity"  style="'width:100px;'">
+					<input type="button"  value="更换验证码" onclick="my.change()" id="btn" >
+				</div>
+				<div class="pad">
+					<input class="code" type="text" placeholder="请输入验证码">
+					<input type="button" value="验证" onclick="my.verify()" style="">
+				</div>
+				<div class='pad' >
+					<button class='primary' onclick='my.login()'> 登  录 </button>
+				</div>				
+			</div>
+
+		</div>	
+
+	</body>
+	
+	<script>
+		var my = {};
+		var isrigh=false;
+		my.login = function(){
+			if(isrigh==true) {
+				var req = {};
+				req.username = $('.form .username').val().trim();
+				req.password = $('.form .password').val().trim();
+
+				Af.rest('[[@{/admin/login.do}]]', req, function (data) {
+					layer.msg('成功', {
+						time: 1000,
+						end: function () {
+							location.href = '[[@{/admin/info}]]';
+						}
+					})
+				})
+			}
+			else {
+				layer.msg ('请输入验证码',{
+					time:1000,
+					end:function (){
+
+					}
+				}
+				)
+			}
+
+		}
+		my.change=function ()
+		{
+			var des='[[@{/code}]]';
+			document.getElementById('identity').src=des+"?ts="+new Date().getTime();
+
+		}
+		my.verify= function ()
+		{
+			var req = {};
+			req.code = $('.form .code').val().trim();
+			Af.rest('[[@{/code.do}]]', req, function(data){
+				layer.msg ('正确',{
+					time:1000,
+					end: function(){
+						isrigh=true;
+
+					}
+				})
+			},function (data1,data2){
+				layer.msg ('验证错误',{
+					time:1000,
+					end: function(){
+						isrigh=false;
+						my.change();
+					}
+				})
+			})
+		}
+	</script>
+</html>
