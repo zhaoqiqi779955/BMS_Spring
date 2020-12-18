@@ -1,8 +1,5 @@
 package utility.database;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class SqlUpdate {
     StringBuilder sql;
     String table;
@@ -14,15 +11,21 @@ public class SqlUpdate {
     }
 
     public void add(String name, String value){
-        if(value==null) return;
+        if(value==null) {
+            sql.append(name+"="+"null, ");
+        }
         else sql.append(name+"=\'"+value+"\', ");
     }
     public void add2(String name,Object value){
-        if(value==null) return;
+        if(value==null) {
+            sql.append(name+"="+"null, ");
+        }
         else sql.append(name+"=\'"+value.toString()+"\', ");
     }
     public void add3(String name,Boolean value){
-        if(value==null) return;
+        if(value==null) {
+            sql.append(name+"="+"null, ");
+        }
         else sql.append(name+"="+(value? 1: 0)+", ");
     }
 
