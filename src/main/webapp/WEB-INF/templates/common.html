@@ -18,14 +18,13 @@
         </div>
         <!--			用户头像-->
         <div class="user-thumbnail" th:switch='${session.userID!=null}'>
-
             <th:block th:case="false">
                 <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
                 <span style="position: absolute;left: 0px;top:50px;font-family: Arial" class="preferredFont">未登录</span>
             </th:block>
             <th:block th:case="true">
                 <img th:src="@{/user/photo}" style="width: 50px;height: 50px;border-radius:50%">
-                <span th:text="${session.userName}" style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont"></span>
+                <span th:text="${session.userName}" style="position: absolute;left: 0px;top:50px;font-family: Arial" class="preferredFont"></span>
             </th:block>
 
         </div>

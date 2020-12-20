@@ -28,9 +28,9 @@
 .search-icon{
 	height: 20px;
 	width: 20px;
-	position: absolute;
-	left: 180px;
-	top: 5px;
+	position: fixed;
+	left: 1080px;
+	top: 45px;
 }
 .user-thumbnail{
 	position: absolute;
