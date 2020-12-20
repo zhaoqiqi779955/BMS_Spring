@@ -1,0 +1,41 @@
+.banner {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: #9296b7;
+    width: 100%;
+    height: 60px;
+}
+
+.root{
+    margin: 0;
+}
+
+.banner-text {
+    display: inline-block;
+    vertical-align: middle;    
+    color: white;
+    font-size: large;
+    font-weight: bolder;    
+    padding-left: 20px;
+}
+
+.account-choose-box{    
+    width: 500px;
+    height: 300px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.account-type{
+    display: inline-block;    
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}

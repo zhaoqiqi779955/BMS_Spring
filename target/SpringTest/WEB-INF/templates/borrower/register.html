@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>A Spring Demo</title>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/afquery.js}" ></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+
+    <style>
+        .main{
+            width: 600px;
+            margin: 20px auto;
+        }
+        .row{
+            margin: 10px 0;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div class='main'>
+    <div class='row'>
+        测试： 文件上传 <br><br>
+    </div>
+
+    <div>
+
+        <input type='file' class='file' style='display:none' />
+
+        <button onclick='my.upload()'> 上传图片 </button> <br><br>
+
+        <label class='note'> </label>
+
+
+        <div class='preview'>
+            <img src='' >
+        </div>
+
+    </div>
+
+</div>
+
+<script th:inline='javascript'>
+
+    var up = new AfUploader();
+    up.setButton('.file');  // 指定<file>元素
+    up.setUploadUrl('photo/upload.do'); // 可以使用thymeleaf表达式
+
+    // 事件处理 'start' 'progress' 'complete' 'error' 'abort'
+    up.processEvent = function(event)
+    {
+        if(event == 'progress')
+        {
+            // this.progress 表示进度
+            $('.note').html(this.progress + '%');
+        }
+        else if(event == 'complete')
+        {
+            $('.note').html('完成 , file=' + this.file.name);
+            var result = JSON.parse(this.response);
+            var imageUrl = result.data.url;
+            $('.preview img').attr('src', imageUrl);
+        }
+    };
+
+    // 是否允许上传
+    up.beforeUpload = function(){
+        if(this.file.size > 10*1000000)
+        {
+            alert("文件太大!");
+            return false;
+        }
+        return true;
+    };
+
+    var my = {};
+
+    my.upload = function(){
+        // 选择文件，并上传
+        up.openFileDialog();
+    }
+
+</script>
+</body>
+</html>
+
+
