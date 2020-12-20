@@ -27,8 +27,12 @@ public class BorrowerController {
     @PostMapping("/register.do")
     public  Object register(@RequestBody JSONObject jreq, HttpSession session)
     {
+
          String tem;
          Integer id=jreq.getInteger("id");
+         if(BorrowerService.isExistent(id)){
+             return new AfRestError("账号已存在");
+         }
          String name=jreq.getString("name");
          tem=jreq.getString("sex");
          Boolean sex=tem.endsWith("女");
@@ -45,29 +49,29 @@ public class BorrowerController {
         borrower.setSex(sex);
         borrower.setMaxBook((byte)LibrarySystem.MAX_Book);
         String path=(String) session.getAttribute("path");
-        borrower.setPath(path);
+        String fileName;
+        if(path!=null)
+        {
+            String suffix= Util.getSuffix(path);
+            fileName="head."+suffix;
+            String dbPath=String.format("%010d",id)+"/"+fileName;
+            borrower.setPath(dbPath);
+            File src=new File(Common.tmpDir,path);
+            File desDir=new File(Common.userFile,String.format("%010d",id));
+            desDir.mkdirs();
+            File desFile=new File(desDir,fileName);
+            Common.exector.submit(new SaveFileTask(src,desFile));
+            //报存用户信息到session
+            session.setAttribute("path",String.format("%010d",id)+"/"+fileName);
+            session.setAttribute("userName",name);
+            session.setAttribute("userID",id);
+            session.setAttribute("level",1);
+        }
+
         if(!(BorrowerService.add(borrower)))
         {
-            return  new AfRestError("账户已存在");
+            return  new AfRestError("注册失败");
         };
-
-
-        if(path!=null){
-            File src=new File(Common.tmpDir,path);
-            String suffix= Util.getSuffix(path);
-            path=Common.userFile+"/"+String.format("%010d",id);
-            File desDir=new File(path);
-            desDir.mkdirs();
-            String fileName="head."+suffix;
-            File desFile=new File(desDir,fileName);
-
-            Common.exector.submit(new SaveFileTask(src,desFile));
-
-            session.setAttribute("path",String.format("%010d",id)+"/"+fileName);
-            session.setAttribute("id",id);
-            session.setAttribute("level",1);
-
-        }
 
         return new AfRestData("");
     }
@@ -86,10 +90,9 @@ public class BorrowerController {
 
     @PostMapping("/borrower/login.do")
     public Object borrowerLogin(@RequestBody JSONObject jreq, Model model, HttpServletRequest req, HttpSession session){
-        String userID = jreq.getString("userID");
+        Integer userID = jreq.getInteger("userID");
         String password = jreq.getString("password");
-        int id=Integer.parseInt(userID);
-        Borrower borrower = BorrowerService.getBorrower(id);
+        Borrower borrower = BorrowerService.getBorrower(userID);
         String userName=borrower.getName();
         if(borrower==null){
             return  new AfRestError("用户不存在");
@@ -98,7 +101,7 @@ public class BorrowerController {
             return new AfRestError("密码错误");
         }
 
-        session.setAttribute("userID", id);
+        session.setAttribute("userID", userID);
         session.setAttribute("userName",userName);
         session.setAttribute("level",1);
         session.setAttribute("path",borrower.getPath());
@@ -109,7 +112,8 @@ public class BorrowerController {
     //-------------个人信息---------------
     @GetMapping("borrower/info")
     public Object borrowerInfo(HttpSession session,Model model){
-        Integer borrower_id = (Integer)session.getAttribute("id");
+        Integer borrower_id = (Integer)session.getAttribute("userID");
+        if(borrower_id==null) return new AfRestError("");
         Borrower borrower = BorrowerService.getBorrower(borrower_id);
         model.addAttribute("borrower",borrower);
         return "borrower/info";
@@ -148,19 +152,20 @@ public class BorrowerController {
         return "borrower/reservation";
     }
 
-    class SaveFileTask implements Runnable {
-        File src = null;
-        File des = null;
 
-        public SaveFileTask(File src, File des) {
-            this.src = src;
-            this.des = des;
-        }
+}
+class SaveFileTask implements Runnable {
+    File src = null;
+    File des = null;
 
-        @Override
-        public void run() {
-            Common.saveFileTo(src, des);
-        }
-
+    public SaveFileTask(File src, File des) {
+        this.src = src;
+        this.des = des;
     }
+
+    @Override
+    public void run() {
+        Common.saveFileTo(src, des);
+    }
+
 }

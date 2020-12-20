@@ -7,68 +7,22 @@
 		<script th:src="@{/js/jquery.min.js}" ></script>
 		<script th:src="@{/js/afquery.js}" ></script>
 		<link rel="stylesheet" th:href="@{/css/common.css}" />
-		<link rel="stylesheet" th:href="@{/css/main.css}" />	
+		<link rel="stylesheet" th:href="@{/css/main.css?v=1.0}" />
 		
 		<!-- layer.js 对话框API -->	
 		<script th:src="@{/layer/layer.js}" ></script>
-		
-		<style>
-			.header{
-				padding: 10px;
-				background: linear-gradient(to bottom, lightskyblue, #7dbedc 30%);
-				height: 70px;
-
-
-			}
-
-			.search{
-				width: 200px;
-				height: 30px;
-				position: absolute;
-				left: 900px;
-				top: 40px;
-			}
-			.search-icon{
-				height: 20px;
-				width: 20px;
-				position: relative;
-				left: 180px;
-				top: -25px;
-			}
-			.user-thumbnail{
-				position: absolute;
-				left: 1250px;
-			}
-			.preferredFont{
-				font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-				color: #333;
-			}
-		</style>
 
 
 	</head>
 	<body th:background="@{/img/background.png}">
-		<div class='header'>
-			<div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
-			<div class="search">
-				<form >
-					<input class="search-info" type="text" placeholder="查询书籍信息"> <img th:src="@{/img/search.png}" onclick="my.search()" class="search-icon">
-				</form>
-			</div>
-<!--			用户头像-->
-			<div class="user-thumbnail">
-				<img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
-				<span style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont">未登录</span>
-			</div>
-
-		</div>
+		<div th:include="~{common::header}"></div>
 		<div class="loginContainer center " >
 			<div class='form' style='padding: 40px;'>
 				<div class='pad' style='margin-bottom: 30px;font-size:110%'>
 					Admin 账 号 密 码 登 录
 				</div>
 				<div class='pad'>
-					<input class='username' type='text' placeholder="账号">
+					<input class='userID' type='text' placeholder="账号">
 				</div>
 				<div class='pad'>
 					<input class='password' type='password' placeholder="密码">
@@ -98,7 +52,7 @@
 		my.login = function(){
 			if(isrigh==true) {
 				var req = {};
-				req.username = $('.form .username').val().trim();
+				req.userID = $('.form .userID').val().trim();
 				req.password = $('.form .password').val().trim();
 
 				Af.rest('[[@{/admin/login.do}]]', req, function (data) {

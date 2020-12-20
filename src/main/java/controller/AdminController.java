@@ -25,9 +25,9 @@ public class AdminController
 	public Object login(@RequestBody JSONObject jreq
 			, HttpSession session)
 	{
-		String username = jreq.getString("username");
+		Integer userID = jreq.getInteger("userID");
 		String password = jreq.getString("password");
-		Admin admin= AdminService.getAdmin(Integer.parseInt(username));
+		Admin admin= AdminService.getAdmin(userID);
 		if(admin==null){
 			return  new AfRestError("用户不存在");
 		}
@@ -35,7 +35,10 @@ public class AdminController
 			return new AfRestError("密码错误");
 		}
 		// 登录成功
-		session.setAttribute("admin", username);
+		session.setAttribute("userID", userID);
+		session.setAttribute("userName",admin.getName());
+		session.setAttribute("path",admin.getPath());
+		session.setAttribute("level",admin.getLevel());
 		return new AfRestData("");
 	}
 

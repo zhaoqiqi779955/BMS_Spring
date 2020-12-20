@@ -52,6 +52,7 @@ public class Common {
         contextPath=sc.getContextPath();
         Common.tmpDir=new File(sc.getRealPath("/tem"));
         tmpDir.mkdirs();
+        System.out.println(sc.getRealPath("/"));
     }
     @GetMapping("/code")
     public void verifyCode(HttpServletResponse response,HttpSession session)
@@ -100,21 +101,42 @@ public class Common {
             return new AfRestError("wrong");
         }
     }
+    //用户获取图像（包括管管理员和普通用户）
     @GetMapping("/user/photo")
     public Object getPhoto(HttpSession session)
     {
-        String userID=(String)session.getAttribute("id");
+       
+        Integer userID=(Integer)session.getAttribute("userID");
+        System.out.println("userID"+userID);
         if(userID!=null){
             String path=(String)session.getAttribute("path");
-            File file=new File(userFile,path);
-            InputStream in;
-            try {
-                in=new FileInputStream(file);
-                String contentType=sc.getMimeType(path);
-                AfSimpleDownload simpleDownload=new AfSimpleDownload(in,contentType);
-                return  simpleDownload;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            System.out.println(path);
+            if(path!=null) {
+                File file = new File(userFile, path);
+                InputStream in;
+                try {
+                    in = new FileInputStream(file);
+                    String contentType = sc.getMimeType(path);
+                    System.out.println("文件路径："+file.getAbsolutePath()+" "+contentType);
+                    AfSimpleDownload simpleDownload = new AfSimpleDownload(in, contentType);
+                    return simpleDownload;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                
+                 path=sc.getRealPath("/WEB-INF/statics/img/user.jpg");
+                 System.out.println("wen:"+path);
+                 File file=new File(path);
+                InputStream in;
+                try {
+                    in = new FileInputStream(file);
+                    AfSimpleDownload simpleDownload = new AfSimpleDownload(in, "image/jpg");
+                    return simpleDownload;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 
         }

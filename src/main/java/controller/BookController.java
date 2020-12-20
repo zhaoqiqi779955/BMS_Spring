@@ -1,2 +1,4 @@
-package controller;public class BookController {
+package controller;
+
+public class BookController {
 }
