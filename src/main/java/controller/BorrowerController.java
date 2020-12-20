@@ -3,18 +3,24 @@ package controller;
 import af.spring.AfRestData;
 import af.spring.AfRestError;
 import com.alibaba.fastjson.JSONObject;
+import data.Book;
+import data.Borrow;
 import data.Borrower;
 import data.LibrarySystem;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import service.BookService;
 import service.BorrowerService;
 import utility.Util;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class BorrowerController {
@@ -72,18 +78,89 @@ public class BorrowerController {
         return "borrower/register";
     }
 
-}
-class SaveFileTask implements Runnable{
-    File src=null;
-    File des=null;
 
-    public SaveFileTask(File src, File des) {
-        this.src = src;
-        this.des = des;
+
+    //-------------登录---------------
+    @GetMapping("/borrower/login")
+    public String borrowerLogin(){return "borrower/login";}
+
+    @PostMapping("/borrower/login.do")
+    public Object borrowerLogin(@RequestBody JSONObject jreq, Model model, HttpServletRequest req, HttpSession session){
+        String userID = jreq.getString("userID");
+        String password = jreq.getString("password");
+        int id=Integer.parseInt(userID);
+        Borrower borrower = BorrowerService.getBorrower(id);
+        String userName=borrower.getName();
+        if(borrower==null){
+            return  new AfRestError("用户不存在");
+        }
+        if(!borrower.getPw().equals(password)){
+            return new AfRestError("密码错误");
+        }
+
+        session.setAttribute("userID", id);
+        session.setAttribute("userName",userName);
+        session.setAttribute("level",1);
+        session.setAttribute("path",borrower.getPath());
+        System.out.println("登陆成功");
+        return new AfRestData("");
     }
 
-    @Override
-    public void run() {
-        Common.saveFileTo(src,des);
+    //-------------个人信息---------------
+    @GetMapping("borrower/info")
+    public Object borrowerInfo(HttpSession session,Model model){
+        Integer borrower_id = (Integer)session.getAttribute("id");
+        Borrower borrower = BorrowerService.getBorrower(borrower_id);
+        model.addAttribute("borrower",borrower);
+        return "borrower/info";
+    }
+
+    //-------------查询书籍---------------
+    @GetMapping("/queryBooks")
+    public String book()
+    {
+        return "borrower/book";
+    }
+
+    @PostMapping("/queryBooks")
+    public Object bookQuery(Model model, HttpServletRequest request)
+    {
+        String bookName = request.getParameter("title");
+        List<Book> bookList = BookService.findOnWord("",bookName,"","",1,5);
+        if(bookList.size()==0){
+            return new AfRestError("没有找到书籍");
+        }
+        model.addAttribute("bookList", bookList);
+        return "borrower/book";
+    }
+
+    //-------------借阅信息---------------
+    @GetMapping("/reservation")
+    public Object reserve(HttpSession session,Model model){
+        Integer borrower_id = (Integer)session.getAttribute("borrower");
+        List<Borrow> BorrowInfo = BorrowerService.getBorrow(borrower_id,1);
+        if(BorrowInfo.size()==0){
+            return new AfRestError("暂时没有借阅信息");
+        }
+        System.out.println("借书信息长度：  "+BorrowInfo.size());
+
+        model.addAttribute("BorrowInfo", BorrowInfo);
+        return "borrower/reservation";
+    }
+
+    class SaveFileTask implements Runnable {
+        File src = null;
+        File des = null;
+
+        public SaveFileTask(File src, File des) {
+            this.src = src;
+            this.des = des;
+        }
+
+        @Override
+        public void run() {
+            Common.saveFileTo(src, des);
+        }
+
     }
 }
