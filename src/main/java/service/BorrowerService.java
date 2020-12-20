@@ -43,6 +43,7 @@ public class BorrowerService {
             AfSimpleDB.insert(borrower);
             return  true;
         } catch (Exception e) {
+           e.printStackTrace();
             return  false;
         }
     }

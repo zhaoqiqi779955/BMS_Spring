@@ -38,4 +38,6 @@ public class AdminController
 		session.setAttribute("admin", username);
 		return new AfRestData("");
 	}
+
 }
+

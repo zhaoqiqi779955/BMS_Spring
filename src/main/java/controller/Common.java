@@ -7,17 +7,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import utility.Util;
+import utility.web.AfSimpleDownload;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Controller
 public class Common {
+    public  static  File storeFile = null;
+    public static File bookFile;
+    public static File userFile;
+    public static File tmpDir;
+    public  static ExecutorService exector= Executors.newFixedThreadPool(3);
+    static {
+  
+        storeFile=new File("C:/store");
+        storeFile.mkdirs();
+        bookFile=new File(storeFile,"/book");
+        bookFile.mkdirs();
+        userFile=new File(storeFile,"/user");
+        userFile.mkdirs();
+        
+    }
+    ServletContext sc;
+    String contextPath;
+
+    public Common(ServletContext servletContext)
+    {
+        sc=servletContext;
+        contextPath=sc.getContextPath();
+        Common.tmpDir=new File(sc.getRealPath("/tem"));
+        tmpDir.mkdirs();
+    }
     @GetMapping("/code")
     public void verifyCode(HttpServletResponse response,HttpSession session)
     {
@@ -63,6 +98,92 @@ public class Common {
         }
         else {
             return new AfRestError("wrong");
+        }
+    }
+    @GetMapping("/user/photo")
+    public Object getPhoto(HttpSession session)
+    {
+        String userID=(String)session.getAttribute("id");
+        if(userID!=null){
+            String path=(String)session.getAttribute("path");
+            File file=new File(userFile,path);
+            InputStream in;
+            try {
+                in=new FileInputStream(file);
+                String contentType=sc.getMimeType(path);
+                AfSimpleDownload simpleDownload=new AfSimpleDownload(in,contentType);
+                return  simpleDownload;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return new AfRestError();
+      
+    }
+    @RequestMapping("/photo/upload.do")
+    public Object upload(HttpServletRequest request,HttpSession session) throws Exception
+    {
+        MultipartHttpServletRequest mhr = (MultipartHttpServletRequest) request;
+        String path=(String)session.getAttribute("path");
+        // 普通表单域
+        String tag = mhr.getParameter("tag");  // 表单的 name='tag'
+        System.out.println("** tag: " + tag);
+        // 文件域
+        MultipartFile mf = mhr.getFile("file"); // 表单里的 name='file'
+        String url = "";
+        if(mf != null && !mf.isEmpty())
+        {
+            String realName = mf.getOriginalFilename();
+            String tmpName = Util.guid() + "." + Util.getSuffix(realName);
+
+            File tmpFile = new File(tmpDir, tmpName);
+            mf.transferTo(tmpFile);
+            url=contextPath+"/"+"tem/"+tmpName;
+            System.out.println("** Save To: " + tmpFile.getAbsolutePath());
+            session.setAttribute("path",tmpName);
+        }
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("url", url);
+
+        return new AfRestData(data);
+    }
+    public static void saveFileTo(File src,File des)
+    {
+        byte buffer []=new byte[4096];
+        BufferedInputStream in=null;
+        BufferedOutputStream out=null;
+        try {
+            in=new BufferedInputStream(new FileInputStream(src));;
+            out=new BufferedOutputStream(new FileOutputStream(des));
+            int x;
+            while ((x=in.read(buffer))!=-1)
+            {
+                out.write(buffer,0,x);
+                out.flush();
+            };
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(out!=null){
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <script th:src="@{/js/jquery.min.js}" ></script>
+    <script th:src="@{/js/afquery.js}" ></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+</head>
+<body>
+<div th:fragment="header">
+    <div class='header'>
+        <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
+        <div class="search">
+            <form >
+                <input class="search-info" type="text" placeholder="查询书籍信息"> <img th:src="@{/img/search.png}" onclick="my.search()" class="search-icon">
+            </form>
+        </div>
+        <!--			用户头像-->
+        <div class="user-thumbnail" th:switch='${session.userID!=null}'>
+
+            <th:block th:case="false">
+                <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
+                <span style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont">未登录</span>
+            </th:block>
+            <th:block th:case="true">
+                <img th:src="@{/photo}" style="width: 50px;height: 50px;border-radius:50%">
+                <span th:text="${session.userName}" style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont"></span>
+            </th:block>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

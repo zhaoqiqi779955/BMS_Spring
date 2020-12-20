@@ -1,15 +1,4 @@
 /* 登录容器*/
-.loginContainer{
-	margin-top: 150px;
-	width: 500px;
-	height: 350px;
-	background-color:white;
-	line-height: 20px;
-	text-align: center;
-	border: 1px solid rgba(187, 187, 187, 100);
-	border-radius: 5px;
-	box-shadow: 10px 10px 5px #888888;
-}
 
 .row{
 	margin-top:4px;

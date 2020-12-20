@@ -1,5 +1,9 @@
 package utility.web;
 
+import org.springframework.web.servlet.View;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,15 +11,10 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.View;
-
 /** 简单的文件下载, 不支持 HTTP-Range 
  * 
  * @author shaofa
- *
+ * 如何设置了filename将不会显示而是直接下载
  */
 public class AfSimpleDownload implements View
 {
@@ -140,7 +139,7 @@ public class AfSimpleDownload implements View
 		outputStream.close();		
 	}
 	
-	
+
 
 	/////////////////////////////////////////////	
 	public void setContentType(String contentType)
