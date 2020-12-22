@@ -79,20 +79,20 @@ public class BookService {
 
     }
     /*
-    根据输入的关键字来查找书籍，关键字为图书类别或者书籍category,title,author,IBSN
+    根据输入的关键字来查找书籍，关键字为图书类别或者书籍category,title,author,ISBN
     其中pageNumber为显示的第页码（从1起)，pageSize为每页的显示条数
      */
-    public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber,int pageSize)
+    public static List<Book> findOnWord(String category,String title,String autuor,String ISBN,int pageNumber,int pageSize)
     {
         title=title.trim();
         category=category.trim();
         autuor=autuor.trim();
-        IBSN=IBSN.trim();
+        ISBN=ISBN.trim();
         int startIndex=(pageNumber-1)*pageSize;
         String query="select * from book where";
         StringBuffer where=new StringBuffer("");
-        if(IBSN!=null&&!IBSN.equals("")){
-            where.append(getLike("IBSN",IBSN));
+        if(ISBN!=null&&!ISBN.equals("")){
+            where.append(getLike("ISBN",ISBN));
             where.append("and");
 
         }
@@ -122,18 +122,18 @@ public class BookService {
         }
         return  null;
     }
-    public static List<Book> findOnWord(String category,String title,String autuor,String IBSN,int pageNumber)
+    public static List<Book> findOnWord(String category,String title,String autuor,String ISBN,int pageNumber)
     {
         int pageSize= LibrarySystem.bookPageSize;
         title=title.trim();
         category=category.trim();
         autuor=autuor.trim();
-        IBSN=IBSN.trim();
+        ISBN=ISBN.trim();
         int startIndex=(pageNumber-1)*pageSize;
         String query="select * from book where";
         StringBuffer where=new StringBuffer("");
-        if(IBSN!=null&&!IBSN.equals("")){
-            where.append(getLike("IBSN",IBSN));
+        if(ISBN!=null&&!ISBN.equals("")){
+            where.append(getLike("ISBN",ISBN));
             where.append("and");
 
         }
@@ -164,6 +164,37 @@ public class BookService {
         return  null;
     }
 
+    //按照一个关键字查找书籍
+    public static List<Book> findOnKeyWord(String keyword,int pageNumber)
+    {
+        int pageSize= LibrarySystem.bookPageSize;
+
+        int startIndex=(pageNumber-1)*pageSize;
+        String query="select * from book where";
+        StringBuffer where=new StringBuffer("");
+
+            where.append(getLike("ISBN",keyword));
+            where.append("or");
+
+
+            where.append(getLike("title",keyword));
+            where.append("or");
+
+            where.append(getLike("author",keyword));
+            where.append("or");
+
+            where.append(getLike("category",keyword));
+            query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
+            System.out.println(query);
+            try {
+                List<Book> bookList =AfSimpleDB.query(query,Book.class);
+                return bookList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return  null;
+    }
     public  static  String getLike(String column,String word)
     {
         String filter="%"+word+"%";

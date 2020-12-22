@@ -103,16 +103,6 @@
 				})
 			})
 		}
-		my.search=function ()
-		{
-			var req={};
 
-			req.keyWord=$('.search .search-info').val().trim();
-			alert(req.keyWord);
-			Af.rest('[[@{/book/search}]]', req, function(data){
-				location.href='[[@{/book/list}]]';
-			}
-			)
-		}
 	</script>
 </html>

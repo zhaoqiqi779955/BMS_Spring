@@ -9,11 +9,29 @@
 </head>
 <body>
 <div th:fragment="header">
+     <script>
+         var com={};
+         com.search=function (){
+             location.href = com.pageUrl (1);
+         }
+
+
+         com.pageUrl = function(pageNumber){
+             var url = "[[@{/search}]]";
+             url += '?pageNumber=' + pageNumber ;
+             var filter = $('.filter').val().trim();
+             if(filter.length>0)
+                 url += '&filter=' + encodeURIComponent(filter);
+             return url;
+         }
+
+     </script>
     <div class='header'>
         <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
         <div class="search">
             <form >
-                <input class="search-info" type="text" placeholder="查询书籍信息"> <img th:src="@{/img/search.png}" onclick="my.search()" class="search-icon">
+                <input class="filter" type="text" placeholder="查询书籍信息" onkeydown='if(window.event.keyCode==13) {com.search();} '>
+                <img th:src="@{/img/search.png}" onclick="com.search()" class="search-icon">
             </form>
         </div>
         <!--			用户头像-->

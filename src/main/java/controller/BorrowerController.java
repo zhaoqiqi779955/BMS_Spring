@@ -24,6 +24,9 @@ import java.util.List;
 
 @Controller
 public class BorrowerController {
+/*
+处理注册
+ */
     @PostMapping("/register.do")
     public  Object register(@RequestBody JSONObject jreq, HttpSession session)
     {
@@ -75,7 +78,9 @@ public class BorrowerController {
 
         return new AfRestData("");
     }
-
+/*
+注册
+ */
     @GetMapping("/register")
     public String register()
     {
@@ -126,18 +131,6 @@ public class BorrowerController {
         return "borrower/book";
     }
 
-    @PostMapping("/queryBooks")
-    public Object bookQuery(Model model, HttpServletRequest request)
-    {
-        String bookName = request.getParameter("title");
-        List<Book> bookList = BookService.findOnWord("",bookName,"","",1,5);
-        if(bookList.size()==0){
-            return new AfRestError("没有找到书籍");
-        }
-        model.addAttribute("bookList", bookList);
-        return "borrower/book";
-    }
-
     //-------------借阅信息---------------
     @GetMapping("/reservation")
     public Object reserve(HttpSession session,Model model){
@@ -152,7 +145,17 @@ public class BorrowerController {
         return "borrower/reservation";
     }
 
-
+    @PostMapping("/queryBooks")
+    public Object bookQuery(Model model, HttpServletRequest request)
+    {
+        String bookName = request.getParameter("title");
+        List<Book> bookList = BookService.findOnWord("",bookName,"","",1,5);
+        if(bookList.size()==0){
+            return new AfRestError("没有找到书籍");
+        }
+        model.addAttribute("bookList", bookList);
+        return "book/list";
+    }
 }
 class SaveFileTask implements Runnable {
     File src = null;

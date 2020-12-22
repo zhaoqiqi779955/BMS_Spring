@@ -107,10 +107,8 @@ public class Common {
     {
        
         Integer userID=(Integer)session.getAttribute("userID");
-        System.out.println("userID"+userID);
         if(userID!=null){
             String path=(String)session.getAttribute("path");
-            System.out.println(path);
             if(path!=null) {
                 File file = new File(userFile, path);
                 InputStream in;
@@ -148,9 +146,6 @@ public class Common {
     {
         MultipartHttpServletRequest mhr = (MultipartHttpServletRequest) request;
         String path=(String)session.getAttribute("path");
-        // 普通表单域
-        String tag = mhr.getParameter("tag");  // 表单的 name='tag'
-        System.out.println("** tag: " + tag);
         // 文件域
         MultipartFile mf = mhr.getFile("file"); // 表单里的 name='file'
         String url = "";
