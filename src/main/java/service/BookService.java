@@ -112,7 +112,6 @@ public class BookService {
         if(len>0){
             where.delete(len-3,len);
             query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
-            System.out.println(query);
             try {
                 List<Book> bookList =AfSimpleDB.query(query,Book.class);
                 return bookList;
@@ -153,7 +152,6 @@ public class BookService {
         if(len>0){
             where.delete(len-3,len);
             query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
-            System.out.println(query);
             try {
                 List<Book> bookList =AfSimpleDB.query(query,Book.class);
                 return bookList;
@@ -185,7 +183,6 @@ public class BookService {
 
             where.append(getLike("category",keyword));
             query+=where.toString()+" order by book_id limit "+startIndex+","+pageSize;
-            System.out.println(query);
             try {
                 List<Book> bookList =AfSimpleDB.query(query,Book.class);
                 return bookList;

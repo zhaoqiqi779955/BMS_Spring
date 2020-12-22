@@ -125,7 +125,7 @@ public class BorrowerController {
     }
 
     //-------------查询书籍---------------
-    @GetMapping("/queryBooks")
+    @GetMapping("/borrower/queryBooks")
     public String book()
     {
         return "borrower/book";

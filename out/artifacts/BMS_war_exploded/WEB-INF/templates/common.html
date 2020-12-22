@@ -11,10 +11,6 @@
 <div th:fragment="header">
      <script>
          var com={};
-         com.search=function (){
-             location.href = com.pageUrl (1);
-         }
-
 
          com.pageUrl = function(pageNumber){
              var url = "[[@{/search}]]";
@@ -23,16 +19,23 @@
              if(filter.length>0)
                  url += '&filter=' + encodeURIComponent(filter);
              return url;
+
          }
+
+         com.search=function (){
+             var loc=com.pageUrl (1);
+             location.href = loc;
+
+         }
+
+
 
      </script>
     <div class='header'>
         <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
         <div class="search">
-            <form >
                 <input class="filter" type="text" placeholder="查询书籍信息" onkeydown='if(window.event.keyCode==13) {com.search();} '>
                 <img th:src="@{/img/search.png}" onclick="com.search()" class="search-icon">
-            </form>
         </div>
         <!--			用户头像-->
         <div class="user-thumbnail" th:switch='${session.userID!=null}'>
