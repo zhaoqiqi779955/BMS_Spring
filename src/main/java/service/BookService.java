@@ -29,7 +29,9 @@ public class BookService {
             AfSimpleDB.insert(book);
             return  true;
         } catch (Exception e) {
+            e.printStackTrace();
            return false;
+
         }
     }
 /*

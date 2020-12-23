@@ -5,15 +5,20 @@ import af.spring.AfRestError;
 import com.alibaba.fastjson.JSONObject;
 import data.Admin;
 import data.Book;
+import data.Borrower;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import service.AdminService;
 import service.BookService;
 import service.BorrowerService;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class AdminController
@@ -42,9 +47,48 @@ public class AdminController
 		session.setAttribute("userName",admin.getName());
 		session.setAttribute("path",admin.getPath());
 		session.setAttribute("level",admin.getLevel());
-		return new AfRestData("");
+		return new AfRestData(admin.getLevel());
 	}
-
+/*
+图书管理员
+ */
+@RequestMapping("/librarian/login")
+public String librarianLogin()
+{
+	return  "/librarian/login";
+}
+/*
+工作台
+ */
+@RequestMapping("/librarian/workshop")
+public String goWorkShop()
+{
+	return "/librarian/workshop";
+}
+//	处理借书
+	@PostMapping("/librarian/borrow")
+	public Object borrow(@RequestBody JSONObject jreq)
+	{
+		Integer book_id=jreq.getInteger("book_id");
+		Integer userID=jreq.getInteger("borrower_id");
+		int res= BorrowerService.borrowBook(userID,book_id);
+		if(res==0){
+			return new AfRestData();
+		}
+		else return new AfRestError(BorrowerController.message.get(res));
+	}
+	@PostMapping("/librarian/returnBook")
+	public Object returnBook(@RequestBody JSONObject jreq)
+	{
+		System.out.println("还书");
+		Integer book_id=jreq.getInteger("book_id");
+		Integer userID=jreq.getInteger("borrower_id");
+		int res= BorrowerService.returnBook(userID,book_id);
+		if(res==1){
+			return new AfRestData();
+		}
+		else return new AfRestError();
+	}
 	/*
 	个人信息
 	 */
@@ -71,6 +115,8 @@ public class AdminController
 	@PostMapping("/admin/queryBooks")
 	public Object bookQuery(Model model, HttpServletRequest request)
 	{
+
+		System.out.println(request.getParameter("title"));
 		List<Book> books = BookService.findOnWord("",request.getParameter("title"),"","",1,5);
 		if(books.size()==0){
 			return new AfRestError("没有找到书籍");
@@ -95,9 +141,8 @@ public class AdminController
 		String author = request.getParameter("author");
 		String category = request.getParameter("category");
 		String price = request.getParameter("price");
-		String path = request.getParameter("path");
 		String ISBN = request.getParameter("ISBN");
-
+		String desc=request.getParameter("desc");
 		Book book = new Book();
 		book.setTitle(title);
 		book.setTotalNum(Byte.valueOf(totalNum));
@@ -105,12 +150,11 @@ public class AdminController
 		book.setAuthor(author);
 		book.setCategory(category);
 		book.setPrice(Integer.valueOf(price));
-		book.setPath(path);
+		book.setDescription(desc);
 		book.setISBN(ISBN);
 
-		BookService.add(book);
-
-		System.out.println(book.toString());
+		boolean res=BookService.add(book);
+		if(!res) return new AfRestError("添加失败");
 		return "admin/addBook";
 	}
 	/*

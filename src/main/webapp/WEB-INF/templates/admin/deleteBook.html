@@ -28,15 +28,7 @@
             border-bottom: 1px solid #f1f1f1;
             background: linear-gradient(to bottom, #d0e7f7 0%, #fbfcfd 50%);
         }
-        .header{
-            padding: 10px;
-            background: linear-gradient(to bottom, lightskyblue, #7dbedc 30%);
-            height: 70px;
-        }
-        .user-thumbnail{
-            position: absolute;
-            left: 1250px;
-        }
+
         .frame{
             height: 670px;
             width: 1300px;
@@ -49,14 +41,10 @@
 </head>
 
 <body th:background="@{/img/background.png}">
-<div class='header'>
-    <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
-    <div class="user-thumbnail">
-        <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
-        <span style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont">未登录</span>
-    </div>
-
-</div>
+<div th:include="~{common::header}"></div>
+<script th:inline="javascript">
+    document.getElementsByClassName("header")[0].style.height="100px";
+</script>
 
 <div style="padding: 20px 550px 10px">
         <form th:action="@{/admin/queryBooks}" method="post" class="form-inline">
@@ -94,9 +82,7 @@
         <a th:href="@{/admin/addBorrower}">
             <li class="list-group-item">新增用户</li>
         </a>
-        <a th:href="@{/admin/reservation}">
-            <li class="list-group-item">借阅信息</li>
-        </a>
+
     </ul>
 
     <div class="panel panel-default" style="width: 70%;margin-left: 2%;margin-top: 1%;float: left">

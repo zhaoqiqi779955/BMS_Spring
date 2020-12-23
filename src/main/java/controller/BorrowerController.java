@@ -151,7 +151,7 @@ public class BorrowerController {
         return "borrower/reservation";
     }
 
-    @PostMapping("/queryBooks")
+    @PostMapping("/borrower/queryBooks")
     public Object bookQuery(Model model, HttpServletRequest request)
     {
         String bookName = request.getParameter("title");

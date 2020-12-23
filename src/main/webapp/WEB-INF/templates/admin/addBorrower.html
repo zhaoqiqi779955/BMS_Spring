@@ -24,19 +24,6 @@
             padding: 0px;
             box-sizing: border-box;
         }
-        .header{
-            padding: 10px;
-            background: linear-gradient(to bottom, lightskyblue, #7dbedc 30%);
-            height: 70px;
-        }
-        .user-thumbnail{
-            position: absolute;
-            left: 1250px;
-        }
-        .preferredFont{
-            font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-            color: #333;
-        }
 
         .frame{
             height: 670px;
@@ -51,20 +38,10 @@
 
 <body th:background="@{/img/background.png}">
 
-<div class='header'>
-    <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
-    <!--    <div class="search">-->
-    <!--        <form >-->
-    <!--            <input class="search-info" type="text" placeholder="查询书籍信息"> <img th:src="@{/img/search.png}" onclick="my.search()" class="search-icon">-->
-    <!--        </form>-->
-    <!--    </div>-->
-    <!--			用户头像-->
-    <div class="user-thumbnail">
-        <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
-        <span style="position: relative;left: -53px;top:17px;font-family: Arial" class="preferredFont">未登录</span>
-    </div>
-
-</div>
+<div th:include="~{common::header}"></div>
+<script th:inline="javascript">
+    document.getElementsByClassName("header")[0].style.height="100px";
+</script>
 
 <div class="frame" style="margin-left: 5%">
 

@@ -30,6 +30,7 @@
 
 
 
+
      </script>
     <div class='header'>
         <div style="float: left;position: absolute;left: 20px"><a th:href="@{/}">首页</a></div>
@@ -43,11 +44,13 @@
         <div class="user-thumbnail" th:switch='${session.userID!=null}'>
             <th:block th:case="false">
                 <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
-                <span style="position: absolute;left: 0px;top:52px;color:whitesmoke" class="preferredFont" >未登录</span>
+                <span style="position: absolute;
+                left: -14px;top:52px;color:whitesmoke;width: 80px;text-align: center" class="preferredFont" >未登录</span>
             </th:block>
             <th:block th:case="true">
                 <img th:src="@{/user/photo}" style="width: 50px;height: 50px;border-radius:50%">
-                <span th:text="${session.userName}" style="position: absolute;left: 8px;top:52px;color:whitesmoke" class="preferredFont" ></span>
+                <span th:text="${session.userName}" style="position: absolute;
+                left: -14px;top:52px;color:whitesmoke;width: 80px;text-align: center" class="preferredFont" ></span>
                 <span><a th:href="@{/}" style="position: absolute;left: 100px;top: 30px">退出</a></span>
             </th:block>
 
