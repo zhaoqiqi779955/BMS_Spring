@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title> 图书管理系统 </title>
+
+    <script th:src="@{/js/jquery.min.js}" ></script>
+    <script th:src="@{/js/afquery.js}" ></script>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- layer.js 对话框API -->
+    <script th:src="@{/layer/layer.js}" ></script>
+
+    <style>
+        *{
+            magin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .banner{
+            padding: 10px;
+            border-bottom: 1px solid #f1f1f1;
+            background: linear-gradient(to bottom, #d0e7f7 0%, #fbfcfd 50%);
+        }
+
+        .frame{
+            height: 670px;
+            width: 1300px;
+            margin: auto;  /*让外框架水平居中*/
+        }
+
+    </style>
+
+
+</head>
+
+<body th:background="@{/img/background.png}">
+<div th:include="~{common::header}"></div>
+<script th:inline="javascript">
+    document.getElementsByClassName("header")[0].style.height="100px";
+</script>
+
+<div style="padding: 20px 550px 10px">
+        <form th:action="@{/admin/queryBooks}" method="post" class="form-inline">
+            <span class="input-group" style="float: left">
+                <input type="text" placeholder="输入图书名" class="form-control" name="title">
+                <span class="input-group-btn">
+                    <input type="submit" value="搜索" class="btn btn-default">
+                </span>
+            </span>
+        </form>
+    <span>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#delete" style="margin-top: 1px;margin-left: 5px;">
+            删除图书
+        </button>
+    </span>
+
+</div>
+
+
+<div class="frame" style="margin-left: 5%">
+
+    <ul class="list-group" style="width: 10%;margin-left: 2%;margin-top: 1%;float: left;">
+        <a th:href="@{/admin/info}">
+            <li class="list-group-item">个人信息</li>
+        </a>
+        <a th:href="@{/admin/deleteBook}">
+            <li class="list-group-item">查询/删除书籍</li>
+        </a>
+        <a th:href="@{/admin/addBook}">
+            <li class="list-group-item">录入新书</li>
+        </a>
+        <a th:href="@{/admin/deleteBorrower}">
+            <li class="list-group-item">查询/删除用户</li>
+        </a>
+        <a th:href="@{/admin/addBorrower}">
+            <li class="list-group-item">新增用户</li>
+        </a>
+
+    </ul>
+
+    <div class="panel panel-default" style="width: 70%;margin-left: 2%;margin-top: 1%;float: left">
+        <div class="panel-heading">
+            <h3 class="panel-title" style="text-align:center">图书检索结果</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover" style="text-align:center">
+                <thead>
+                <tr>
+                    <th>bookId</th>
+                    <th>书名</th>
+                    <th>图书馆藏书</th>
+                    <th>图书馆现有藏书</th>
+                    <th>作者</th>
+                    <th>预约</th>
+                </tr>
+                </thead>
+                <tbody style="text-align: left">
+                <tr th:each="Book: ${bookList}">
+                    <td th:text="${Book.book_id}"></td>
+                    <td th:text="${Book.title}"></td>
+                    <td th:text="${Book.totalNum}"></td>
+                    <td th:text="${Book.presentNum}"></td>
+                    <td th:text="${Book.author}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="delete" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-title">
+                <h3 class="text-center">删除图书</h3>
+            </div>
+            <div class="modal-body">
+                <form id="form-delete">
+                    <div class="form-group has-feedback">
+                        <label for="dl-id">book_id</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                            <input id="dl-id" class="form-control" placeholder="请输入book_id" maxlength="13" type="text">
+                        </div>
+                        <span style="color:red;display: none;" class="tips"></span>
+                        <span style="display: none;" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        <span style="display: none;" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                    </div>
+
+                    <div class="text-right">
+                        <button class="btn btn-primary" type="button" id="btn-delete">删除</button>
+                        <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script>
+    $('#btn-delete').click(function (e) {
+        var id = document.getElementById("dl-id").value;
+        var req = {
+            'book_id': id
+        };
+        Af.rest('[[@{/admin/deleteBook}]]', req, function (data) {
+            layer.msg('成功', {
+                time: 1000,
+                end: function () {
+                    location.href = '[[@{/admin/deleteBook}]]';
+                }
+            })
+        })
+
+    });
+</script>
+</html>
