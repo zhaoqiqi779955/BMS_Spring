@@ -15,7 +15,10 @@
 
 	</head>
 	<body th:background="@{/img/background.png}">
-		<div th:include="~{common::header}"></div>
+	<div th:include="~{common::header}"></div>
+	<script th:inline="javascript">
+		document.getElementsByClassName("header")[0].style.height="100px";
+	</script>
 		<div class="loginContainer center " >
 			<div class='form' style='padding: 40px;'>
 				<div class='pad' style='margin-bottom: 30px;font-size:110%'>
