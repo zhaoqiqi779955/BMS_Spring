@@ -40,7 +40,7 @@
 <div style="padding: 20px 550px 10px">
     <form th:action="@{/borrower/queryBooks}" method="post" class="form-inline" id="searchform">
         <div class="input-group">
-            <input type="text" placeholder="输入图书名" class="form-control" name="title">
+            <input type="text" placeholder="输入图书名"  name="title" class="form-control" >
             <span class="input-group-btn">
                 <input type="submit" value="搜索" class="btn btn-default">
 <!--                <button class='primary' onclick='my.search()'> 搜 索 </button>-->
@@ -60,7 +60,10 @@
             <li class="list-group-item">查询书籍</li>
         </a>
         <a th:href="@{/borrower/reservation}">
-            <li class="list-group-item">借阅信息</li>
+            <li class="list-group-item">预约信息</li>
+        </a>
+        <a th:href="@{/borrower/borrowInfo}">
+            <li class="list-group-item">借书信息</li>
         </a>
     </ul>
 
@@ -85,9 +88,9 @@
                     <td th:text="${Book.totalNum}"></td>
                     <td th:text="${Book.presentNum}"></td>
                     <td th:text="${Book.author}"></td>
-                    <td><a th:href="'/managebooks/'+${Book.book_id}+'/booklist'">
-                        <button type="button" class="btn btn-info">预约</button>
-                    </a></td>
+                    <td>
+                        <button type="button" class="btn btn-info" th:onclick='my.reserve([[${Book.book_id}]])'>预约</button>
+                  </td>
                 </tr>
                 </tbody>
             </table>
@@ -112,6 +115,28 @@
                 }
             })
         })
+    }
+    my.reserve=function (book_id)
+    {
+        var req = {};
+        req.book_id=book_id;
+        Af.rest('[[@{/borrower/reserve}]]', req, function (data) {
+            layer.msg('成功', {
+                time: 1000,
+                end: function () {
+
+                }
+            })
+        },function (error,reason){
+            layer.msg ('借书失败：'+reason,{
+                time:1000,
+                end:function (){
+                    if(error==-2){
+                        location.href='[[@{/borrower/login}]]';
+                    }
+                }
+            })
+        });
     }
 </script>
 </html>

@@ -6,20 +6,37 @@
 
     <script th:src="@{/js/jquery.min.js}" ></script>
     <script th:src="@{/js/afquery.js}" ></script>
-    <link rel="stylesheet" th:href="@{/css/common.css?v=1.0}" />
-    <link rel="stylesheet" th:href="@{/css/main.css?v=1.0}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- layer.js 对话框API -->
     <script th:src="@{/layer/layer.js}" ></script>
 
     <style>
+        *{
+            magin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .header{
+            padding: 10px;
+            background: linear-gradient(to bottom, lightskyblue, #7dbedc 30%);
+            height: 70px;
+        }
+        .user-thumbnail{
+            position: absolute;
+            left: 1250px;
+        }
+        .preferredFont{
+            font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+            color: #333;
+        }
+
         .frame{
-
-            height: 300px;
+            height: 670px;
             width: 1300px;
-            margin:10px auto;  /*让外框架水平居中*/
-
+            margin: auto;  /*让外框架水平居中*/
 
         }
     </style>
@@ -27,16 +44,12 @@
 
 </head>
 
-<body th:background="@{/img/background.png}" >
-<!--<div class='banner'>-->
-<!--    图书管理系统-->
-<!--</div>-->
-
-<div th:include="~{common::header}" style="height: 200px"></div>
+<body th:background="@{/img/background.png}">
+<div th:include="~{common::header}"></div>
 <script th:inline="javascript">
     document.getElementsByClassName("header")[0].style.height="100px";
 </script>
-<div class="frame" >
+<div class="frame" style="margin-left: 5%">
 
     <ul class="list-group" style="width: 10%;margin-left: 2%;margin-top: 1%;float: left;">
         <a th:href="@{/borrower/info}">
@@ -46,42 +59,32 @@
             <li class="list-group-item">查询书籍</li>
         </a>
         <a th:href="@{/borrower/reservation}">
-            <li class="list-group-item">预约信息</li>
+            <li class="list-group-item">预约记录</li>
         </a>
         <a th:href="@{/borrower/borrowInfo}">
-            <li class="list-group-item">借书信息</li>
+            <li class="list-group-item">借书记录</li>
         </a>
     </ul>
 
     <div class="panel panel-default" style="width: 70%;margin-left: 2%;margin-top: 1%;float: left">
         <div class="panel-heading">
-            <h3 class="panel-title" style="text-align:center">个人信息</h3>
+            <h3 class="panel-title" style="text-align:center">借书记录</h3>
         </div>
         <div class="panel-body">
+
             <table class="table table-hover" style="text-align:center">
                 <thead>
                 <tr>
-                    <th>卡号</th>
-                    <th>用户名</th>
-                    <th>生日</th>
-                    <th>性别</th>
-                    <th>手机</th>
-<!--                    <th>密码</th>-->
-<!--                    <th>等级</th>-->
-<!--                    <th>可借书最大数量</th>-->
-                    <th>已借书数量</th>
+                    <th>书名</th>
+                    <th>借书时间</th>
+                    <th>到期时间</th>
                 </tr>
                 </thead>
                 <tbody style="text-align: left">
-                <tr>
-                    <td th:text="${borrower.borrower_id}"></td>
-                    <td th:text="${borrower.name}"></td>
-<!--                    <td th:text="${#calendars.format(borrower.birth,'yyyy年 MM月 dd日')}"></td>-->
-                    <td th:text="${T(utility.database.DateFormat).simpleDate(borrower.birth)}"></td>
-                    <td th:text="${borrower.sex? '女' : '男'}">  </td>
-                    <td th:text="${borrower.tel}"></td>
-                    <td th:text="${borrower.borrowedNum}"></td>
-
+                <tr th:each="res: ${reservation}">
+                    <td th:text="${res.title}"></td>
+                    <td th:text="${T(utility.database.DateFormat).simpleTime(res.date)}"></td>
+                    <td th:text="${T(utility.database.DateFormat).simpleTime(res.expire)}"></td>
                 </tr>
                 </tbody>
             </table>

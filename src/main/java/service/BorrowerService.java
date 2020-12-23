@@ -81,7 +81,7 @@ public class BorrowerService {
     }
     /*
     预约操作
-    返回-1表示服务器发生异常，0表示成功，1用户不存在，2存在不良记录，3借书已达最大限度，4图书余量不足
+    返回-1表示服务器发生异常，0表示成功，1用户不存在，2存在不良记录，3借书已达最大限度，4图书余量不足,5表示已预约，6表示已经借阅
      */
     public static  int reserveBook(int borrower_id,int book_id)
     {
@@ -108,8 +108,9 @@ public class BorrowerService {
             e.printStackTrace();
         }
     }
+
     /*
-    借书操作,返回-1表示服务器发生异常，0表示成功，1用户不存在，2存在不良记录，3借书已达最大限度，4图书余量不足
+    借书操作,返回-1表示服务器发生异常，0表示成功，1用户不存在，2存在不良记录，3借书已达最大限度，4图书余量不足，6表示充分借阅
      */
     public static  int borrowBook(int borrower_id,int book_id)
     {

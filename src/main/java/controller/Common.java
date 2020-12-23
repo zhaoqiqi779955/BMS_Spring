@@ -203,4 +203,15 @@ public class Common {
             }
         }
     }
+    @RequestMapping("/home")
+    public String goHome(HttpSession session)
+    {
+        session.invalidate();
+       return  "/index";
+    }
+    @RequestMapping({"/",""})
+    public String forward()
+    {
+        return "redirect:/home";
+    }
 }

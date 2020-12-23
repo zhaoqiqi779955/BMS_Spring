@@ -3,10 +3,7 @@ package controller;
 import af.spring.AfRestData;
 import af.spring.AfRestError;
 import com.alibaba.fastjson.JSONObject;
-import data.Book;
-import data.Borrow;
-import data.Borrower;
-import data.LibrarySystem;
+import data.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +17,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BorrowerController {
+
+    static  Map<Integer,String> message=new HashMap<>();
+    static {
+        message.put(-1,"服务器异常");
+        message.put(0,"成功");
+        message.put(1,"用户不存在");
+        message.put(2,"存在不良记录");
+        message.put(3,"已达最大借书量");
+        message.put(4,"图书余量不足");
+        message.put(5,"重复预约");
+        message.put(6,"重复借阅");
+    }
 /*
 处理注册
  */
@@ -128,20 +139,15 @@ public class BorrowerController {
     @GetMapping("/borrower/queryBooks")
     public String book()
     {
-        return "borrower/book";
+        return "book/list";
     }
 
     //-------------借阅信息---------------
-    @GetMapping("/reservation")
+    @GetMapping("/borrower/reservation")
     public Object reserve(HttpSession session,Model model){
-        Integer borrower_id = (Integer)session.getAttribute("borrower");
-        List<Borrow> BorrowInfo = BorrowerService.getBorrow(borrower_id,1);
-        if(BorrowInfo.size()==0){
-            return new AfRestError("暂时没有借阅信息");
-        }
-        System.out.println("借书信息长度：  "+BorrowInfo.size());
-
-        model.addAttribute("BorrowInfo", BorrowInfo);
+        Integer borrower_id = (Integer)session.getAttribute("userID");
+        List<Reservation> reservation = BorrowerService.getReservation(borrower_id,1);
+        model.addAttribute("reservation", reservation);
         return "borrower/reservation";
     }
 
@@ -155,6 +161,33 @@ public class BorrowerController {
         }
         model.addAttribute("bookList", bookList);
         return "book/list";
+    }
+    /*
+    预约
+     */
+    @PostMapping("borrower/reserve")
+    public Object reserve(@RequestBody JSONObject jreq,HttpSession session)
+    {
+        Integer book_id=jreq.getInteger("book_id");
+        Integer userID=(Integer)session.getAttribute("userID");
+        if (userID==null) return new AfRestError(-2,"未登录");
+        int res=BorrowerService.reserveBook(userID,book_id);
+        if(res==0){
+            return new AfRestData();
+        }
+        else return new AfRestError(message.get(res));
+
+    }
+    /*
+    借书信息
+     */
+    @GetMapping("/borrower/borrowInfo")
+    public String borrowInfo(HttpSession session,Model model)
+    {
+        Integer borrower_id = (Integer)session.getAttribute("userID");
+        List<Borrow> reservation = BorrowerService.getBorrow(borrower_id,1);
+        model.addAttribute("reservation", reservation);
+        return "borrower/borrowInfo";
     }
 }
 class SaveFileTask implements Runnable {
