@@ -15,7 +15,8 @@ public class Borrow {
     private Integer book_id;
     private Date expire;
     private String title;
-    boolean isReturned;
+    private Boolean isReturned;
+
     public String getTitle() {
         return title;
     }
@@ -24,7 +25,13 @@ public class Borrow {
         this.title = title;
     }
 
+    public Boolean getIsReturned() {
+        return isReturned;
+    }
 
+    public void setIsReturned(Boolean returned) {
+        isReturned = returned;
+    }
 
     public Integer getBorrow_id() {
         return borrow_id;
@@ -66,9 +73,6 @@ public class Borrow {
         this.expire = expire;
     }
 
-    public boolean isReturned() {
-        return isReturned;
-    }
 
     public void setReturned(boolean returned) {
         isReturned = returned;
