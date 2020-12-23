@@ -156,7 +156,7 @@ public class BorrowerController {
     {
         String bookName = request.getParameter("title");
         List<Book> bookList = BookService.findOnWord("",bookName,"","",1,5);
-        if(bookList.size()==0){
+        if(bookList == null || bookList.size()==0){
             return new AfRestError("没有找到书籍");
         }
         model.addAttribute("bookList", bookList);

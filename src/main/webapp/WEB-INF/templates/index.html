@@ -20,9 +20,11 @@
             line-height: 100px;
         }
         .homeList{
-            position: absolute;
+            /*position: absolute;
             top:300px;
-            left: 420px;
+            left: 420px;*/
+            margin-top:300px;
+            width:600px;
             list-style-type: none;
 
         }
@@ -39,15 +41,15 @@
 <body th:background="@{/img/background.png}">
 <div th:include="~{common::header}"></div>
 <div>
-    <ul class="homeList">
+    <ul class="homeList center">
         <li>
-            <div class="circle" style="background: #D2B36C"><a th:href="@{/admin/login}">admin</a></div>
+            <div class="circle" style="background: #D2B36C;margin:auto;"><a th:href="@{/admin/login}">admin</a></div>
         </li>
         <li>
-            <div class="circle" style="background: #B74848"><a th:href="@{/librarian/login}">librarian</a></div>
+            <div class="circle" style="background: #B74848;margin:auto;"><a th:href="@{/librarian/login}">librarian</a></div>
         </li>
         <li>
-            <div class="circle" style="background: #34569B"><a th:href="@{/borrower/login}">borrower</a></div>
+            <div class="circle" style="background: #34569B;margin:auto;"><a th:href="@{/borrower/login}">borrower</a></div>
         </li>
     </ul>
     <div class="center" style="text-align: center;clear: both;margin-top:370px;"><a th:href="@{/register}" style="font-size: 18px;color: blue;font-weight: bold">新用户注册</a></div>
