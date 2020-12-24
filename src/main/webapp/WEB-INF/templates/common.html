@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <script th:src="@{/js/jquery.min.js}" ></script>
+    <script th:src="@{/js/afquery.js}" ></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+</head>
+<body>
+<div th:fragment="header">
+     <script>
+         var com={};
+
+         com.pageUrl = function(pageNumber){
+             var url = "[[@{/search}]]";
+             url += '?pageNumber=' + pageNumber ;
+             var filter = $('.filter').val().trim();
+             if(filter.length>0)
+                 url += '&filter=' + encodeURIComponent(filter);
+             return url;
+
+         }
+
+         com.search=function (){
+             var loc=com.pageUrl (1);
+             location.href = loc;
+
+         }
+
+
+
+
+     </script>
+    <div class='header'>
+        <div style="float: left;position: absolute;left: 20px"><a th:href="@{/}">首页</a></div>
+
+        <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
+        <div class="search">
+                <input class="filter" type="text" placeholder="查询书籍信息" onkeydown='if(window.event.keyCode==13) {com.search();} '>
+                <img th:src="@{/img/search.png}" onclick="com.search()" class="search-icon">
+        </div>
+        <!--			用户头像-->
+        <div class="user-thumbnail" th:switch='${session.userID!=null}'>
+            <th:block th:case="false">
+                <img th:src="@{/img/user.jpg}" style="width: 50px;height: 50px;border-radius:50%">
+                <span style="position: absolute;
+                left: -14px;top:52px;color:whitesmoke;width: 80px;text-align: center" class="preferredFont" >未登录</span>
+            </th:block>
+            <th:block th:case="true">
+                <img th:src="@{/user/photo}" style="width: 50px;height: 50px;border-radius:50%">
+                <span th:text="${session.userName}" style="position: absolute;
+                left: -14px;top:52px;color:whitesmoke;width: 80px;text-align: center" class="preferredFont" ></span>
+                <span><a th:href="@{/}" style="position: absolute;left: 100px;top: 30px">退出</a></span>
+            </th:block>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
