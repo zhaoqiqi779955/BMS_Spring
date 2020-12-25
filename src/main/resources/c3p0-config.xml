@@ -5,7 +5,7 @@
         <property name="driverClass">com.mysql.jdbc.Driver</property>
         <property name="jdbcUrl">jdbc:mysql://localhost:3306/library?useUnicode=true&amp;characterEncoding=UTF-8</property>
         <property name="user">root</property>
-        <property name="password">a0991726019</property>
+        <property name="password">yuki</property>
 
         <property name="maxPoolSize" value="20"/>
         <!-- 连接池中保留的最小连接数，默认为：3-->
