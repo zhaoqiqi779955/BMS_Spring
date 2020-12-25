@@ -179,6 +179,19 @@ public class BorrowerController {
 
     }
     /*
+    取消预约
+     */
+    @PostMapping("borrower/removeReservation")
+    public void removeReservation(@RequestBody JSONObject jreq,HttpSession session)
+    {
+        Integer reservation_id = jreq.getInteger("reservation_id");
+        try{
+            BorrowerService.removeReservation(reservation_id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    /*
     借书信息
      */
     @GetMapping("/borrower/borrowInfo")
