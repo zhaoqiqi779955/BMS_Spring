@@ -16,11 +16,8 @@
              var url = "[[@{/search}]]";
              url += '?pageNumber=' + pageNumber ;
              var filter = $('.filter').val().trim();
-             if(filter.length>0){
+             if(filter.length>0)
                  url += '&filter=' + encodeURIComponent(filter);
-             }else{
-                 url += '&filter=""';
-             }
              return url;
 
          }
@@ -32,11 +29,9 @@
          }
 
 
-
-
      </script>
     <div class='header'>
-        <div style="float: left;position: absolute;left: 20px"><a th:href="@{/}">首页</a></div>
+        <div style="float: left;position: absolute;left: 20px"><button style="color: #2D93CA;" onclick="history.back();">返回</button></div>
 
         <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
         <div class="search">

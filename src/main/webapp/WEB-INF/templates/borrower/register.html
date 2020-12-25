@@ -104,9 +104,12 @@
         var req = {};
         req.code = $('.form .code').val().trim();
         Af.rest('[[@{/code.do}]]', req, function(data){
-            isrigh=true;
             layer.msg ('正确',{
                 time:1000,
+                end: function(){
+                    isrigh=true;
+
+                }
             })
         },function (data1,data2){
             layer.msg ('验证错误',{

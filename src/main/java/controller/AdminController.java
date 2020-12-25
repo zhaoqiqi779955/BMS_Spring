@@ -118,7 +118,7 @@ public String goWorkShop()
 
 		System.out.println(request.getParameter("title"));
 		List<Book> books = BookService.findOnWord("",request.getParameter("title"),"","",1,5);
-		if(books.equals(null) || books.size()==0){
+		if(books.size()==0){
 			return new AfRestError("没有找到书籍");
 		}
 		model.addAttribute("bookList", books);
