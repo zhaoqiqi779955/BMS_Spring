@@ -61,6 +61,7 @@ public class BorrowerService {
         asu.add2("maxBook",borrower.getMaxBook());
         asu.add("badRecord",borrower.getBadRecord());
         asu.add2("borrowedNum",borrower.getBorrowedNum());
+        asu.add2("pw",borrower.getPw());
         String s1 = asu + " where borrower_id=" + borrower.getBorrower_id();
         try {
             AfSimpleDB.execute(s1);

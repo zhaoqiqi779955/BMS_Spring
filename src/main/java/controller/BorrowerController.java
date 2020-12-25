@@ -135,6 +135,39 @@ public class BorrowerController {
         return "borrower/info";
     }
 
+    @GetMapping("borrower/updateInfo")
+    public String updateInfo(){return "borrower/updateInfo";}
+    @PostMapping("/borrower/updateInfo")
+    public Object borrowerUpdate(HttpSession session, HttpServletRequest request){
+        Integer borrower_id = (Integer)session.getAttribute("userID");
+        if(borrower_id==null) return new AfRestError("");
+        Borrower borrower = BorrowerService.getBorrower(borrower_id);
+
+        String name = request.getParameter("name");
+        if(!name.equals("")){
+            borrower.setName(name);
+        }
+        String adr = request.getParameter("adr");
+        if(!adr.equals("")){
+            borrower.setAdr(adr);
+        }
+        String tel = request.getParameter("tel");
+        if(!tel.equals("")){
+            borrower.setTel(tel);
+        }
+        String path = request.getParameter("path");
+        if(!path.equals("")){
+            borrower.setPath(path);
+        }
+        String password = request.getParameter("pw");
+        if(!password.equals("")){
+            borrower.setPw(password);
+        }
+        BorrowerService.update(borrower);
+        
+        return "borrower/updateInfo";
+    }
+
     //-------------查询书籍---------------
     @GetMapping("/borrower/queryBooks")
     public String book()
