@@ -18,9 +18,9 @@
              var filter = $('.filter').val().trim();
              if(filter.length>0)
                  url += '&filter=' + encodeURIComponent(filter);
-             else return false;
+             else
+                 url += '&filter=""';
              return url;
-
          }
 
          com.search=function (){

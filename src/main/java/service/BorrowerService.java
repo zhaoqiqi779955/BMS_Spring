@@ -61,6 +61,7 @@ public class BorrowerService {
         asu.add2("maxBook",borrower.getMaxBook());
         asu.add("badRecord",borrower.getBadRecord());
         asu.add2("borrowedNum",borrower.getBorrowedNum());
+        asu.add2("pw",borrower.getPw());
         String s1 = asu + " where borrower_id=" + borrower.getBorrower_id();
         try {
             AfSimpleDB.execute(s1);
@@ -99,9 +100,9 @@ public class BorrowerService {
     /*
     取消预约
      */
-    public static void  removeReservation(int reservation_id,int book_id)
+    public static void  removeReservation(int reservation_id)
     {
-        String sql="call removeReservation("+reservation_id+","+book_id+")";
+        String sql="call deleteReservation("+reservation_id+")";
         try {
             AfSimpleDB.execute(sql);
         } catch (Exception e) {

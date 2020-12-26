@@ -78,6 +78,7 @@
                     <th>书名</th>
                     <th>预约时间</th>
                     <th>失效时间</th>
+                    <th>取消预约</th>
                 </tr>
                 </thead>
                 <tbody style="text-align: left">
@@ -85,6 +86,9 @@
                     <td th:text="${res.title}"></td>
                     <td th:text="${T(utility.database.DateFormat).simpleTime(res.date)}"></td>
                     <td th:text="${T(utility.database.DateFormat).simpleTime(res.expire)}"></td>
+                    <td>
+                        <button type="button" class="btn btn-info" th:onclick='my.removeReservation([[${res.reservation_id}]])'>取消</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -96,6 +100,12 @@
 </body>
 
 <script>
-
+    var my = {};
+    my.removeReservation = function (reservation_id){
+        var req = {};
+        req.reservation_id = reservation_id;
+        Af.rest('[[@{/borrower/removeReservation}]]', req);
+        location.reload();
+    }
 </script>
 </html>

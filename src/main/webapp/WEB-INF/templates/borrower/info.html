@@ -67,18 +67,20 @@
                     <th>性别</th>
                     <th>手机</th>
                     <th>已借书数量</th>
+                    <th>修改信息</th>
                 </tr>
                 </thead>
                 <tbody style="text-align: left">
                 <tr>
                     <td th:text="${borrower.borrower_id}"></td>
                     <td th:text="${borrower.name}"></td>
-<!--                    <td th:text="${#calendars.format(borrower.birth,'yyyy年 MM月 dd日')}"></td>-->
                     <td th:text="${T(utility.database.DateFormat).simpleDate(borrower.birth)}"></td>
                     <td th:text="${borrower.sex? '女' : '男'}">  </td>
                     <td th:text="${borrower.tel}"></td>
                     <td th:text="${borrower.borrowedNum}"></td>
-
+                    <td>
+                        <button type="button" class="btn btn-info" th:onclick='update([[@{/borrower/updateInfo}]])'>修改</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -90,6 +92,9 @@
 </body>
 
 <script>
+update = function (url){
+    location.href = url
+}
 
 </script>
 </html>
