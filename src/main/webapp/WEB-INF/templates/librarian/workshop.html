@@ -64,7 +64,6 @@
             <tr style="height: 50px" >
                 <th>借阅者id</th>
                 <th>书籍id</th>
-
             </tr>
             <tr>
                 <td>
@@ -73,7 +72,6 @@
                 <td>
                     <input type="text" class="book_id" name="book_id">
                 </td>
-
             </tr>
             <tr class="work">
                 <td style="padding-top: 20px">
@@ -81,6 +79,11 @@
                 </td>
                 <td style="padding-top: 20px">
                     <button onclick="my.returnBook()" style="background: #FD482C">还书</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button th:onclick='my.manageReservation([[@{/librarian/reservation}]])'>预约管理</button>
                 </td>
             </tr>
         </table>
@@ -131,6 +134,9 @@
                     }
                 })
             });
+        }
+        my.manageReservation = function (url){
+            location.href = url;
         }
 </script>
 </html>

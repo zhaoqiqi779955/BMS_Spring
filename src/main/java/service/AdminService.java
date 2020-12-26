@@ -2,9 +2,14 @@ package service;
 
 import af.sql.c3p0.AfSimpleDB;
 import data.Admin;
+import data.Borrower;
 import data.DataUtil;
+import data.Reservation;
 import utility.database.DateFormat;
 import utility.database.SqlUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminService {
     public static Admin createAdmin(){
@@ -56,5 +61,25 @@ public class AdminService {
             e.printStackTrace();
         }
         return null;
+    }
+    public static List<Borrower> getAllBorrowers(){
+        List<Borrower> borrowers = new ArrayList<>();
+        int lineID = 0;
+        while(true){
+            String query = "select * from borrower order by borrower_id asc limit "+lineID+","+(lineID+1);
+            lineID += 1;
+            Borrower borrower = null;
+            try{
+                borrower = (Borrower) AfSimpleDB.get(query,Borrower.class);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if(borrower != null){
+                borrowers.add(borrower);
+            }else{
+                break;
+            }
+        }
+        return borrowers;
     }
 }
