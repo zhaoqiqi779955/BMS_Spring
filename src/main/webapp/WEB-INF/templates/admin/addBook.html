@@ -71,33 +71,43 @@
     </ul>
 
     <div style="padding: 2px 60px 50px 60px;width: 65%;margin-left: 2%;margin-top: 1%;float: left">
-        <form class="bs-example bs-example-form" role="form" method="post">
+        <form class="bs-example bs-example-form" role="form" method="post" autocomplete="on">
             <div>
                 <h4 class="text-center">请输入图书的信息</h4>
             </div>
             <div class="input-group">
                 <span class="input-group-addon">书名</span>
-                <input type="text" class="form-control" placeholder="请输入书名" name="title">
+                <input type="text" class="form-control" placeholder="请输入书名" name="title" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">数量</span>
-                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum">
+                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">作者</span>
-                <input type="text" class="form-control" placeholder="请输入图书作者" name="author">
+                <input type="text" class="form-control" placeholder="请输入图书作者" name="author" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">类别</span>
-                <input type="text" class="form-control" placeholder="请输入图书类别" name="category">
+                <input type="text" class="form-control" placeholder="请输入图书类别" list="choice"  name="category" required>
+                <datalist id="choice">
+                    <option value="经典名著"></option>
+                    <option value="小说"></option>
+                    <option value="现代文学"></option>
+                    <option value="计算机"></option>
+                    <option value="物理学"></option>
+                    <option value="生活百科"></option>
+                    <option value="传记"></option>
+
+                </datalist>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">价格</span>
-                <input type="text" class="form-control" placeholder="请输入图书价格" name="price">
+                <input type="text" class="form-control" placeholder="请输入图书价格" name="price" required>
             </div>
             <br>
             <div class="input-group">

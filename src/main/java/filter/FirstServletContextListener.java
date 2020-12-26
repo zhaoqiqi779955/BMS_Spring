@@ -1,23 +1,33 @@
-package listener;
+package filter;
+
+import af.sql.c3p0.AfSimpleDB;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-/**
- * Created by Administrator on 2017/6/27.
- */
 
 public class FirstServletContextListener implements ServletContextListener{
 
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("servletcontext初始化了");
 
+        String sql="set global event_scheduler = on";
+        try {
+            AfSimpleDB.execute(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("servletcontext销毁了");
+        String sql="set global event_scheduler = off";
+
+        try {
+            AfSimpleDB.execute(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

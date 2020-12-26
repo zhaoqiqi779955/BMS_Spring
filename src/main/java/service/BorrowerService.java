@@ -148,7 +148,6 @@ public class BorrowerService {
         int start=(pageNumber-1)*pageSize;
         String sql="call getReservation("+borrower_id+ ","+start+","+pageSize+")";
         try {
-            System.out.println(sql);
             return  AfSimpleDB.query(sql,Reservation.class);
         } catch (Exception e) {
             e.printStackTrace();

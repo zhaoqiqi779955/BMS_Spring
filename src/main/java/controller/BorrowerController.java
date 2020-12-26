@@ -61,6 +61,7 @@ public class BorrowerController {
         borrower.setBirth(birth);
         borrower.setLevel(new Byte("1"));
         borrower.setSex(sex);
+        borrower.setTel(tel);
         borrower.setMaxBook((byte)LibrarySystem.MAX_Book);
         String path=(String) session.getAttribute("path");
         String fileName;
@@ -75,18 +76,18 @@ public class BorrowerController {
             desDir.mkdirs();
             File desFile=new File(desDir,fileName);
             Common.exector.submit(new SaveFileTask(src,desFile));
-            //报存用户信息到session
             session.setAttribute("path",String.format("%010d",id)+"/"+fileName);
-            session.setAttribute("userName",name);
-            session.setAttribute("userID",id);
-            session.setAttribute("level",1);
         }
 
         if(!(BorrowerService.add(borrower)))
         {
             return  new AfRestError("注册失败");
         };
+        //报存用户信息到session
 
+        session.setAttribute("userName",name);
+        session.setAttribute("userID",id);
+        session.setAttribute("level",1);
         return new AfRestData("");
     }
 /*
@@ -109,14 +110,14 @@ public class BorrowerController {
         Integer userID = jreq.getInteger("userID");
         String password = jreq.getString("password");
         Borrower borrower = BorrowerService.getBorrower(userID);
-        String userName=borrower.getName();
+
         if(borrower==null){
             return  new AfRestError("用户不存在");
         }
         if(!borrower.getPw().equals(password)){
             return new AfRestError("密码错误");
         }
-
+        String userName=borrower.getName();
         session.setAttribute("userID", userID);
         session.setAttribute("userName",userName);
         session.setAttribute("level",1);
@@ -165,7 +166,7 @@ public class BorrowerController {
     /*
     预约
      */
-    @PostMapping("borrower/reserve")
+    @PostMapping("/borrower/reserve")
     public Object reserve(@RequestBody JSONObject jreq,HttpSession session)
     {
         Integer book_id=jreq.getInteger("book_id");

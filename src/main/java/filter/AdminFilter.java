@@ -35,14 +35,9 @@ public class AdminFilter implements Filter
             chain.doFilter(req, resp);
             return;
         }
-         Object level= session.getAttribute("level");
-         int lev=0;
-         if(level!=null)
-         {
-             lev=Integer.parseInt(level.toString());
-         }
 
-        if (level==null||lev<3) {
+        Object level=session.getAttribute("level");
+        if (level==null|| Integer.parseInt(level.toString()) != 3) {
 
             // ?号后面的部分也得带上
             String query = request.getQueryString();

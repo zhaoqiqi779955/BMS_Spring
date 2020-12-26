@@ -18,20 +18,22 @@
              var filter = $('.filter').val().trim();
              if(filter.length>0)
                  url += '&filter=' + encodeURIComponent(filter);
+             else return false;
              return url;
 
          }
 
          com.search=function (){
              var loc=com.pageUrl (1);
-             location.href = loc;
+             if(loc)
+                location.href = loc;
 
          }
 
 
      </script>
     <div class='header'>
-        <div style="float: left;position: absolute;left: 20px"><button style="color: #2D93CA;" onclick="history.back();">返回</button></div>
+        <div style="float: left;position: absolute;left: 20px"><button style="color: #2D93CA;font-size: 14px;" onclick="history.back();">返回</button></div>
 
         <div style="font-size: 24px;line-height:70px;position: absolute;left:200px;font-weight: bold;">图书管理系统</div>
         <div class="search">
