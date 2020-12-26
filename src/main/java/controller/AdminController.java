@@ -146,6 +146,50 @@ public class AdminController {
         return "admin/updateInfo";
     }
     /*
+    修改书籍
+    */
+    @GetMapping("admin/updateBook")
+    public String goUpdateBook(){return "/admin/updateBook";}
+    @PostMapping("admin/updateBook")
+    public Object updateBook(HttpSession session, HttpServletRequest request){
+        Book book = BookService.getBook(Integer.parseInt(request.getParameter("book_id")));
+        String title = request.getParameter("title");
+        System.out.println(book.getTitle());
+        System.out.println(book.getAuthor());
+        System.out.println(book.getCategory());
+        System.out.println(book.getPrice());
+        if(!title.equals("")){
+            book.setTitle(title);
+        }
+        String totalNum = request.getParameter("totalNum");
+        if(!totalNum.equals("")){
+            book.setTotalNum(Byte.parseByte(totalNum));
+        }
+        String author = request.getParameter("author");
+        if(!author.equals("")){
+            book.setAuthor(author);
+        }
+        String category = request.getParameter("category");
+        if(!category.equals("")){
+            book.setCategory(category);
+        }
+        String price = request.getParameter("price");
+        if(!price.equals("")){
+            book.setPrice(Integer.parseInt(price));
+        }
+        String ISBN = request.getParameter("ISBN");
+        if(!ISBN.equals("")){
+            book.setISBN(ISBN);
+        }
+        String desc = request.getParameter("desc");
+        if(!desc.equals("")){
+            book.setDescription(desc);
+        }
+        System.out.println(book.getPrice());
+        BookService.update(book);
+        return "admin/updateBook";
+    }
+    /*
     查询书籍
      */
     @GetMapping("/admin/queryBooks")

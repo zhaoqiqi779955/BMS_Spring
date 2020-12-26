@@ -6,7 +6,7 @@
 
     <script th:src="@{/js/jquery.min.js}" ></script>
     <script th:src="@{/js/afquery.js}" ></script>
-    <!--    <script th:src="@{/js/check.js}" ></script>-->
+<!--    <script th:src="@{/js/check.js}" ></script>-->
     <link rel="stylesheet" th:href="@{/css/common.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,6 +25,7 @@
             box-sizing: border-box;
         }
 
+
         .frame{
             height: 670px;
             width: 1300px;
@@ -36,7 +37,10 @@
 
 </head>
 
-<body th:background="@{/img/background.png}">
+<body th:background="@{/img/background.png}" onload="setBookID()">
+<!--<div class='banner'>-->
+<!--    图书管理系统-->
+<!--</div>-->
 
 <div th:include="~{common::header}"></div>
 <script th:inline="javascript">
@@ -69,37 +73,54 @@
     <div style="padding: 2px 60px 50px 60px;width: 65%;margin-left: 2%;margin-top: 1%;float: left">
         <form class="bs-example bs-example-form" role="form" method="post">
             <div>
-                <h4 class="text-center">请输入要更新的信息，不更新可以留空</h4>
+                <h4 class="text-center">请输入图书的信息，不变的内容留空</h4>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">书籍编号</span>
+                <input type="text"
+                       class="form-control"
+                       id = "book_id"
+                       name="book_id"
+                       readonly>
             </div>
             <br>
             <div class="input-group">
-                <span class="input-group-addon">用户名</span>
-                <input type="text" class="form-control" placeholder="请输入用户名" name="name">
+                <span class="input-group-addon">书名</span>
+                <input type="text" class="form-control" placeholder="请输入书名" name="title">
             </div>
             <br>
             <div class="input-group">
-                <span class="input-group-addon">地址</span>
-                <input type="text" class="form-control" placeholder="请输入地址" name="adr">
+                <span class="input-group-addon">数量</span>
+                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum">
             </div>
             <br>
             <div class="input-group">
-                <span class="input-group-addon">手机</span>
-                <input type="text" class="form-control" placeholder="请输入手机" name="tel">
+                <span class="input-group-addon">作者</span>
+                <input type="text" class="form-control" placeholder="请输入图书作者" name="author">
             </div>
             <br>
             <div class="input-group">
-                <span class="input-group-addon">图片路径名</span>
-                <input type="text" class="form-control" placeholder="请输入用户图片路径" name="path">
+                <span class="input-group-addon">类别</span>
+                <input type="text" class="form-control" placeholder="请输入图书类别" name="category">
             </div>
             <br>
             <div class="input-group">
-                <span class="input-group-addon">密码</span>
-                <input type="password" class="form-control" placeholder="请输入密码" name="pw">
+                <span class="input-group-addon">价格</span>
+                <input type="text" class="form-control" placeholder="请输入图书价格" name="price">
             </div>
             <br>
-            <input class="btn btn-primary" type="submit" th:action="@{/admin/updateInfo}" value="更新信息">
+            <div class="input-group">
+                <span class="input-group-addon">ISBN</span>
+                <input type="text" class="form-control" placeholder="请输入图书ISBN码" name="ISBN">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">描述</span>
+                <input type="text" class="form-control" placeholder="请输入描述" name="desc">
+            </div>
+            <br>
+            <input class="btn btn-primary center" type="submit" th:action="@{/admin/updateBook}" value="更新书籍">
         </form>
-
     </div>
 
 </div>
@@ -108,6 +129,22 @@
 
 <script>
 
+    function setBookID(){
+        var book_id = getQueryVariable("book_id");
+        document.getElementById("book_id").value = book_id;
+        document.getElementById("book_id").placeholder = book_id;
+    }
+
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
 
 </script>
 </html>
