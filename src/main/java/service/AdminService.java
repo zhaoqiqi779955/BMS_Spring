@@ -45,6 +45,7 @@ public class AdminService {
         asu.add2("workTime",admin.getWorkTime());
         asu.add2("salary",admin.getSalary());
         asu.add2("level",admin.getLevel());
+        asu.add2("pw",admin.getPw());
         String s1 = asu + " where work_id=" + admin.getWork_id();
         try {
             AfSimpleDB.execute(s1);

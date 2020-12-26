@@ -6,9 +6,14 @@
 
     <script th:src="@{/js/jquery.min.js}" ></script>
     <script th:src="@{/js/afquery.js}" ></script>
+    <!--    <script th:src="@{/js/check.js}" ></script>-->
     <link rel="stylesheet" th:href="@{/css/common.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- layer.js 对话框API -->
     <script th:src="@{/layer/layer.js}" ></script>
@@ -19,7 +24,6 @@
             padding: 0px;
             box-sizing: border-box;
         }
-
 
         .frame{
             height: 670px;
@@ -33,14 +37,12 @@
 </head>
 
 <body th:background="@{/img/background.png}">
-<!--<div class='banner'>-->
-<!--    图书管理系统-->
-<!--</div>-->
 
 <div th:include="~{common::header}"></div>
 <script th:inline="javascript">
     document.getElementsByClassName("header")[0].style.height="100px";
 </script>
+
 <div class="frame" style="margin-left: 5%">
 
     <ul class="list-group" style="width: 10%;margin-left: 2%;margin-top: 1%;float: left;">
@@ -64,34 +66,39 @@
         </a>
     </ul>
 
-    <div class="panel panel-default" style="width: 70%;margin-left: 2%;margin-top: 1%;float: left">
-        <div class="panel-heading">
-            <h3 class="panel-title" style="text-align:center">个人信息</h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover" style="text-align:center">
-                <thead>
-                <tr>
-                    <th>管理员id</th>
-                    <th>姓名</th>
-                    <th>手机</th>
-                    <th>等级</th>
-                    <th>修改信息</th>
-                </tr>
-                </thead>
-                <tbody style="text-align: left">
-                <tr>
-                    <td th:text="${admin.work_id}"></td>
-                    <td th:text="${admin.name}"></td>
-                    <td th:text="${admin.tel}"></td>
-                    <td th:text="${admin.level}"></td>
-                    <td>
-                        <button type="button" class="btn btn-info" th:onclick='update([[@{/admin/updateInfo}]])'>修改</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div style="padding: 2px 60px 50px 60px;width: 65%;margin-left: 2%;margin-top: 1%;float: left">
+        <form class="bs-example bs-example-form" role="form" method="post">
+            <div>
+                <h4 class="text-center">请输入要更新的信息，不更新可以留空</h4>
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">用户名</span>
+                <input type="text" class="form-control" placeholder="请输入用户名" name="name">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">地址</span>
+                <input type="text" class="form-control" placeholder="请输入地址" name="adr">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">手机</span>
+                <input type="text" class="form-control" placeholder="请输入手机" name="tel">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">图片路径名</span>
+                <input type="text" class="form-control" placeholder="请输入用户图片路径" name="path">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">密码</span>
+                <input type="password" class="form-control" placeholder="请输入密码" name="pw">
+            </div>
+            <input class="btn btn-primary" type="submit" th:action="@{/admin/updateInfo}" value="更新信息">
+        </form>
+
     </div>
 
 </div>
@@ -99,8 +106,7 @@
 </body>
 
 <script>
-    update = function (url){
-        location.href = url
-    }
+
+
 </script>
 </html>

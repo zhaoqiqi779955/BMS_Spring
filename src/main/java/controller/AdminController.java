@@ -114,6 +114,37 @@ public class AdminController {
         return "admin/info";
     }
 
+    @GetMapping("admin/updateInfo")
+    public String updateInfo(){return "/admin/updateInfo";}
+    @PostMapping("admin/updateInfo")
+    public Object adminUpdate(HttpSession session,HttpServletRequest request){
+        Integer admin_id = (Integer)session.getAttribute("userID");
+        if(admin_id == null) return new AfRestError("");
+        Admin admin = AdminService.getAdmin(admin_id);
+
+        String name = request.getParameter("name");
+        if(!name.equals("")){
+            admin.setName(name);
+        }
+        String adr = request.getParameter("adr");
+        if(!adr.equals("")){
+            admin.setAdr(adr);
+        }
+        String tel = request.getParameter("tel");
+        if(!tel.equals("")){
+            admin.setTel(tel);
+        }
+        String path = request.getParameter("path");
+        if(!path.equals("")){
+            admin.setPath(path);
+        }
+        String password = request.getParameter("pw");
+        if(!password.equals("")){
+            admin.setPw(password);
+        }
+        AdminService.update(admin);
+        return "admin/updateInfo";
+    }
     /*
     查询书籍
      */
