@@ -135,27 +135,29 @@ public String goWorkShop()
 	}
 
 	@PostMapping("/admin/addBook")
-	public Object addBook(HttpServletRequest request){
-		String title = request.getParameter("title");
-		String totalNum = request.getParameter("totalNum");
-		String author = request.getParameter("author");
-		String category = request.getParameter("category");
-		String price = request.getParameter("price");
-		String ISBN = request.getParameter("ISBN");
-		String desc=request.getParameter("desc");
+	public Object addBook(@RequestBody JSONObject Jreq){
+		String title = Jreq.getString("title");
+		Byte totalNum = Jreq.getByte("totalNum");
+		String author = Jreq.getString("author");
+		String category = Jreq.getString("category");
+		Double price = Jreq.getDouble("price");
+		String ISBN = Jreq.getString("ISBN");
+
 		Book book = new Book();
 		book.setTitle(title);
-		book.setTotalNum(Byte.valueOf(totalNum));
-		book.setPresentNum(Byte.valueOf(totalNum));
+		book.setTotalNum(totalNum);
+		book.setPresentNum(totalNum);
 		book.setAuthor(author);
 		book.setCategory(category);
-		book.setPrice(Double.valueOf(price));
-		book.setDescription(desc);
+		book.setPrice(price);
 		book.setISBN(ISBN);
 
 		boolean res=BookService.add(book);
-		if(!res) return new AfRestError("添加失败");
-		return "admin/addBook";
+		if(!res){
+			return new AfRestError("添加失败");
+		}
+		System.out.println("添加书籍。。。。。。。。");
+		return new AfRestData("");
 	}
 	/*
 	删除书籍
