@@ -149,7 +149,7 @@ public String goWorkShop()
 		book.setPresentNum(Byte.valueOf(totalNum));
 		book.setAuthor(author);
 		book.setCategory(category);
-		book.setPrice(Integer.valueOf(price));
+		book.setPrice(Double.valueOf(price));
 		book.setDescription(desc);
 		book.setISBN(ISBN);
 
