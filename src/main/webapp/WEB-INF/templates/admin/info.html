@@ -75,6 +75,9 @@
                     <th>管理员id</th>
                     <th>姓名</th>
                     <th>手机</th>
+                    <th>生日</th>
+                    <th>工作时间</th>
+                    <th>地址</th>
                     <th>等级</th>
                 </tr>
                 </thead>
@@ -83,6 +86,9 @@
                     <td th:text="${admin.work_id}"></td>
                     <td th:text="${admin.name}"></td>
                     <td th:text="${admin.tel}"></td>
+                    <td th:text="${T(utility.database.DateFormat).simpleTime(admin.birth)}"></td>
+                    <td th:text="${admin.workTime}"></td>
+                    <td th:text="${admin.adr}"></td>
                     <td th:text="${admin.level}"></td>
                 </tr>
                 </tbody>

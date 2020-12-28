@@ -68,28 +68,28 @@
     </ul>
 
     <div style="padding: 2px 60px 50px 60px;width: 65%;margin-left: 2%;margin-top: 1%;float: left">
-        <form id="form1" class="bs-example bs-example-form" role="form" method="post" autocomplete="on" th:action="@{/admin/addBook}">
+        <form id="form1" class="bs-example bs-example-form" role="form" autocomplete="on">
             <div>
                 <h4 class="text-center">请输入图书的信息</h4>
             </div>
             <div class="input-group">
                 <span class="input-group-addon">书名</span>
-                <input type="text" class="form-control" placeholder="请输入书名" name="title" required>
+                <input type="text" class="form-control" placeholder="请输入书名" id="title" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">数量</span>
-                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum" required>
+                <input type="text" class="form-control" placeholder="请输入添加数量" id="totalNum" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">作者</span>
-                <input type="text" class="form-control" placeholder="请输入图书作者" name="author" required>
+                <input type="text" class="form-control" placeholder="请输入图书作者" id="author" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">类别</span>
-                <input type="text" class="form-control" placeholder="请输入图书类别" list="choice"  name="category" required>
+                <input type="text" class="form-control" placeholder="请输入图书类别" list="choice"  id="category" required>
                 <datalist id="choice">
                     <option value="经典名著"></option>
                     <option value="小说"></option>
@@ -98,26 +98,20 @@
                     <option value="物理学"></option>
                     <option value="生活百科"></option>
                     <option value="传记"></option>
-
                 </datalist>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">价格</span>
-                <input type="text" class="form-control" placeholder="请输入图书价格" name="price" required>
+                <input type="text" class="form-control" placeholder="请输入图书价格" id="price" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">ISBN</span>
-                <input type="text" class="form-control" placeholder="请输入图书ISBN码" name="ISBN" required>
+                <input type="text" class="form-control" placeholder="请输入图书ISBN码" id="ISBN" required>
             </div>
             <br>
-            <div class="input-group">
-                <span class="input-group-addon">描述</span>
-                <input type="text" class="form-control" placeholder="请输入描述" name="desc">
-            </div>
-
-            <input style="left: 300px;top: 30px;position: relative" class="btn btn-primary center" type="submit" value="添加书籍">
+            <button class="btn btn-primary center" id="btn_addBook">添加书籍</button>
         </form>
     </div>
 
@@ -126,16 +120,31 @@
 </body>
 
 <script>
-    $(function () {
-        $('#form1').ajaxForm(function (data) {
-            if (data=="1") {
-                alert(data.reason)
-            } else {
-                alert("xxx！");
-                window.location.reload()
-            }
+    $('#btn_addBook').click(function (e) {
+        var title = document.getElementById("title").value;
+        var totalNum = document.getElementById("totalNum").value;
+        var author = document.getElementById("author").value;
+        var category = document.getElementById("category").value;
+        var price = document.getElementById("price").value;
+        var ISBN = document.getElementById("ISBN").value;
+
+        var req = {
+            'title': title,
+            'totalNum': totalNum,
+            'author': author,
+            'category': category,
+            'price': price,
+            'ISBN': ISBN
+        };
+        Af.rest('[[@{/admin/addBook}]]', req, function () {
+            layer.msg('成功', {
+                time: 1000,
+                end: function () {
+                    location.href = '[[@{/admin/addBook}]]';
+                }
+            })
         })
-    })
+    });
 
 </script>
 </html>
