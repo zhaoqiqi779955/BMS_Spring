@@ -23,6 +23,7 @@
             height: 670px;
             width: 1300px;
             margin: auto;  /*让外框架水平居中*/
+
         }
 
     </style>
@@ -37,7 +38,7 @@
 <script th:inline="javascript">
     document.getElementsByClassName("header")[0].style.height="100px";
 </script>
-<div style="padding: 20px 550px 10px">
+<div style="padding: 20px 550px 10px;">
     <form th:action="@{/borrower/queryBooks}" method="post" class="form-inline" id="searchform">
         <div class="input-group">
             <input type="text" placeholder="输入图书名"  name="title" class="form-control" >

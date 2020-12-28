@@ -156,10 +156,6 @@ public class BorrowerController {
         if(!tel.equals("")){
             borrower.setTel(tel);
         }
-        String path = request.getParameter("path");
-        if(!path.equals("")){
-            borrower.setPath(path);
-        }
         String password = request.getParameter("pw");
         if(!password.equals("")){
             borrower.setPw(password);
