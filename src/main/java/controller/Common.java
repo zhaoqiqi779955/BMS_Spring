@@ -33,6 +33,8 @@ public class Common {
     public static File userFile;
     public static File tmpDir;
     public  static ExecutorService exector= Executors.newFixedThreadPool(3);
+
+
     static {
   
         storeFile=new File("C:/store");
@@ -50,6 +52,7 @@ public class Common {
     {
         sc=servletContext;
         contextPath=sc.getContextPath();
+        //零时文件
         Common.tmpDir=new File(sc.getRealPath("/tem"));
         tmpDir.mkdirs();
         System.out.println(sc.getRealPath("/"));

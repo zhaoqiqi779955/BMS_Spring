@@ -12,10 +12,19 @@ public class Book {
     private Byte presentNum;
     private String author;
     private String category;
-    private Integer price;
+    private Double price;
+
     private String path;
     private String ISBN;
     private String description;
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     public Byte getTotalNum() {
         return totalNum;
@@ -67,13 +76,7 @@ public class Book {
         this.category = category;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 
     public String getPath() {
         return path;

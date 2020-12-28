@@ -6,7 +6,7 @@
 
     <script th:src="@{/js/jquery.min.js}" ></script>
     <script th:src="@{/js/afquery.js}" ></script>
-<!--    <script th:src="@{/js/check.js}" ></script>-->
+    <script th:src="@{/js/jquery.form.js}" ></script>
     <link rel="stylesheet" th:href="@{/css/common.css}" />
     <link rel="stylesheet" th:href="@{/css/main.css}" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -65,51 +65,59 @@
         <a th:href="@{/admin/addBorrower}">
             <li class="list-group-item">新增用户</li>
         </a>
-        <a th:href="@{/admin/reservation}">
-            <li class="list-group-item">借阅信息</li>
-        </a>
     </ul>
 
     <div style="padding: 2px 60px 50px 60px;width: 65%;margin-left: 2%;margin-top: 1%;float: left">
-        <form class="bs-example bs-example-form" role="form" method="post">
+        <form id="form1" class="bs-example bs-example-form" role="form" method="post" autocomplete="on" th:action="@{/admin/addBook}">
             <div>
                 <h4 class="text-center">请输入图书的信息</h4>
             </div>
             <div class="input-group">
                 <span class="input-group-addon">书名</span>
-                <input type="text" class="form-control" placeholder="请输入书名" name="title">
+                <input type="text" class="form-control" placeholder="请输入书名" name="title" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">数量</span>
-                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum">
+                <input type="text" class="form-control" placeholder="请输入添加数量" name="totalNum" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">作者</span>
-                <input type="text" class="form-control" placeholder="请输入图书作者" name="author">
+                <input type="text" class="form-control" placeholder="请输入图书作者" name="author" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">类别</span>
-                <input type="text" class="form-control" placeholder="请输入图书类别" name="category">
+                <input type="text" class="form-control" placeholder="请输入图书类别" list="choice"  name="category" required>
+                <datalist id="choice">
+                    <option value="经典名著"></option>
+                    <option value="小说"></option>
+                    <option value="现代文学"></option>
+                    <option value="计算机"></option>
+                    <option value="物理学"></option>
+                    <option value="生活百科"></option>
+                    <option value="传记"></option>
+
+                </datalist>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">价格</span>
-                <input type="text" class="form-control" placeholder="请输入图书价格" name="price">
+                <input type="text" class="form-control" placeholder="请输入图书价格" name="price" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">ISBN</span>
-                <input type="text" class="form-control" placeholder="请输入图书ISBN码" name="ISBN">
+                <input type="text" class="form-control" placeholder="请输入图书ISBN码" name="ISBN" required>
             </div>
             <br>
             <div class="input-group">
                 <span class="input-group-addon">描述</span>
                 <input type="text" class="form-control" placeholder="请输入描述" name="desc">
             </div>
-            <input class="btn btn-primary center" type="submit" th:action="@{/admin/addBook}" value="添加书籍">
+
+            <input style="left: 300px;top: 30px;position: relative" class="btn btn-primary center" type="submit" value="添加书籍">
         </form>
     </div>
 
@@ -118,7 +126,16 @@
 </body>
 
 <script>
-
+    $(function () {
+        $('#form1').ajaxForm(function (data) {
+            if (data=="1") {
+                alert(data.reason)
+            } else {
+                alert("xxx！");
+                window.location.reload()
+            }
+        })
+    })
 
 </script>
 </html>
