@@ -65,6 +65,23 @@ public String goWorkShop()
 {
 	return "/librarian/workshop";
 }
+/*
+处理预约
+*/
+@GetMapping("/librarian/reservation")
+public String goReservation(HttpSession session,Model model) {
+	List<Borrower> borrowers = AdminService.getAllBorrowers();
+	List<Reservation> reservations = new ArrayList<>();
+	int lenBorrowers = borrowers.size();
+	for(int i = 0 ; i < lenBorrowers ; i++){
+		Borrower tmpBorrower = borrowers.get(i);
+		List<Reservation> tmpReservations = BorrowerService.getReservation(tmpBorrower.getBorrower_id(),1);
+		reservations.addAll(tmpReservations);
+	}
+	model.addAttribute("reservation", reservations);
+	return "/librarian/reservation";
+}
+
 //	处理借书
 	@PostMapping("/librarian/borrow")
 	public Object borrow(@RequestBody JSONObject jreq)
@@ -102,7 +119,47 @@ public String goWorkShop()
 		System.out.println("准备展示的个人信息。。。。。");
 		return "admin/info";
 	}
-
+	/*
+	更新个人信息
+	*/
+	@GetMapping("admin/updateInfo")
+    public String updateInfo(){return "/admin/updateInfo";}
+    @PostMapping("admin/updateInfo")
+    public Object adminUpdate(HttpSession session,HttpServletRequest request){
+        Integer admin_id = (Integer)session.getAttribute("userID");
+        if(admin_id == null) return new AfRestError("");
+        Admin admin = AdminService.getAdmin(admin_id);
+        String name = request.getParameter("name");
+        if(!name.equals("")){
+            admin.setName(name);
+        }
+        String adr = request.getParameter("adr");
+        if(!adr.equals("")){
+            admin.setAdr(adr);
+        }
+        String tel = request.getParameter("tel");
+        if(!tel.equals("")){
+            admin.setTel(tel);
+        }
+        String password = request.getParameter("pw");
+        if(!password.equals("")){
+            admin.setPw(password);
+        }
+        String birth = request.getParameter("birth");
+        if(!birth.equals("")){
+            admin.setBirth(Date.valueOf(birth));
+        }
+        String sex = request.getParameter("sex");
+        if(!sex.equals("")){
+            if(sex.equals("1")){
+                admin.setSex(true);
+            }else{
+                admin.setSex(false);
+            }
+        }
+        AdminService.update(admin);
+        return "admin/updateInfo";
+    }
 	/*
 	查询书籍
 	 */
@@ -178,6 +235,50 @@ public String goWorkShop()
 		System.out.println("正在删除书籍。。。。");
 		return new AfRestData("");
 	}
+	/*
+	更新书籍
+	*/
+	@GetMapping("admin/updateBook")
+    public String goUpdateBook(){return "/admin/updateBook";}
+    @PostMapping("admin/updateBook")
+    public Object updateBook(HttpSession session, HttpServletRequest request){
+        Book book = BookService.getBook(Integer.parseInt(request.getParameter("book_id")));
+        String title = request.getParameter("title");
+        System.out.println(book.getTitle());
+        System.out.println(book.getAuthor());
+        System.out.println(book.getCategory());
+        System.out.println(book.getPrice());
+        if(!title.equals("")){
+            book.setTitle(title);
+        }
+        String totalNum = request.getParameter("totalNum");
+        if(!totalNum.equals("")){
+            book.setTotalNum(Byte.parseByte(totalNum));
+        }
+        String author = request.getParameter("author");
+        if(!author.equals("")){
+            book.setAuthor(author);
+        }
+        String category = request.getParameter("category");
+        if(!category.equals("")){
+            book.setCategory(category);
+        }
+        String price = request.getParameter("price");
+        if(!price.equals("")){
+            book.setPrice(Double.parseDouble(price));
+        }
+        String ISBN = request.getParameter("ISBN");
+        if(!ISBN.equals("")){
+            book.setISBN(ISBN);
+        }
+        String desc = request.getParameter("desc");
+        if(!desc.equals("")){
+            book.setDescription(desc);
+        }
+        System.out.println(book.getPrice());
+        BookService.update(book);
+        return "admin/updateBook";
+    }
 	/*
 	查询Borrower
 	 */

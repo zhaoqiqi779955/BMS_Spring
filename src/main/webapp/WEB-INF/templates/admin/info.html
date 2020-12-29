@@ -76,6 +76,7 @@
                     <th>姓名</th>
                     <th>手机</th>
                     <th>等级</th>
+                    <th>修改信息</th>
                 </tr>
                 </thead>
                 <tbody style="text-align: left">
@@ -84,6 +85,9 @@
                     <td th:text="${admin.name}"></td>
                     <td th:text="${admin.tel}"></td>
                     <td th:text="${admin.level}"></td>
+                    <td>
+                        <button type="button" class="btn btn-info" th:onclick='update([[@{/admin/updateInfo}]])'>修改</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -95,6 +99,8 @@
 </body>
 
 <script>
-
+    update = function (url){
+        location.href = url
+    }
 </script>
 </html>

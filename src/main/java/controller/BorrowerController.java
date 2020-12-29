@@ -160,6 +160,18 @@ public class BorrowerController {
         if(!password.equals("")){
             borrower.setPw(password);
         }
+        String birth = request.getParameter("birth");
+        if(!birth.equals("")){
+            borrower.setBirth(java.sql.Date.valueOf(birth));
+        }
+        String sex = request.getParameter("sex");
+        if(!sex.equals("")){
+            if(sex.equals("1")){
+                borrower.setSex(true);
+            }else{
+                borrower.setSex(false);
+            }
+        }
         BorrowerService.update(borrower);
         
         return "borrower/updateInfo";
