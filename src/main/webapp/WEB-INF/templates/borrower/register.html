@@ -24,12 +24,16 @@
             border-radius: 5px;
             box-shadow: 10px 10px 5px #888888;
         }
+        body{
+            background-image:url("[[@{/img/background.png}]]");
+            background-repeat:no-repeat;
+        }
 
     </style>
 
 
 </head>
-<body th:background="@{/img/background.png}">
+<body>
 <div th:include="~{common::header}"></div>
 <div class="registerContainer center">
     <div class='form' style='padding: 40px;'>

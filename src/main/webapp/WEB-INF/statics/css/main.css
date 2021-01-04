@@ -33,15 +33,16 @@
 
 .dropdown-content {
 	display: none;
-	position: absolute;
+
 	background-color: white;
 	padding: 6px;
 	padding-top: 10px;
 	width: 300px;
 	height: 300px;
 	min-width: 100px;
-	z-index: 5;
 	border-radius: 5px;
+	position: relative;
+	left: -200px;
 }
 
 .dropdown-content a {
@@ -85,7 +86,7 @@
 	height: 20px;
 	width: 20px;
 	position: absolute;
-	left: 180px;
+	left: 175px;
 	top: 3px;
 }
 .user-thumbnail{

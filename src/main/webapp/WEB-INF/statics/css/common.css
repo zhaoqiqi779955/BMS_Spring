@@ -1,9 +1,11 @@
 body{
 	margin: 0px;
 	padding: 0px;
+   background-size:cover
 }
-
-
+.outline{
+	border: 1px solid red;
+}
 
 a{
 	text-decoration: none;

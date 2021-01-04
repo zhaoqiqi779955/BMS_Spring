@@ -27,12 +27,16 @@
             margin: auto;  /*让外框架水平居中*/
 
         }
+        body{
+            background-image:url("[[@{/img/background.png}]]");
+            background-repeat:no-repeat;
+        }
     </style>
 
 
 </head>
 
-<body th:background="@{/img/background.png}">
+<body>
 <!--<div class='banner'>-->
 <!--    图书管理系统-->
 <!--</div>-->
@@ -59,9 +63,7 @@
         <a th:href="@{/admin/addBorrower}">
             <li class="list-group-item">新增用户</li>
         </a>
-        <a th:href="@{/admin/reservation}">
-            <li class="list-group-item">借阅信息</li>
-        </a>
+
     </ul>
 
     <div class="panel panel-default" style="width: 70%;margin-left: 2%;margin-top: 1%;float: left">

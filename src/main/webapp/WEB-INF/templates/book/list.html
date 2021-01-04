@@ -25,13 +25,17 @@
             margin: auto;  /*让外框架水平居中*/
 
         }
+        body{
+            background-image:url("[[@{/img/background.png}]]");
+            background-repeat:no-repeat;
+        }
 
     </style>
 
 
 </head>
 
-<body th:background="@{/img/background.png}">
+<body>
 
 <!--记得加入下面的js来重新定义样式-->
 <div th:include="~{common::header}"></div>
