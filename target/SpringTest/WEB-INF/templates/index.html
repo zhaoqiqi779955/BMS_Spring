@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title> 图书管理系统 </title>
+
+    <script th:src="@{/js/jquery.min.js}" ></script>
+    <script th:src="@{/js/afquery.js}" ></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css?v=1.0}" />
+
+    <!-- layer.js 对话框API -->
+    <script th:src="@{/layer/layer.js}" ></script>
+    <style>
+        .circle{
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+        }
+        .homeList{
+
+            list-style-type: none;
+            text-align: center;
+            width: 650px;
+            left:50%; top:40%;
+            position:absolute;
+            transform:translatex(-50%);
+
+        }
+        li{
+            width: 200px;
+            float: left;
+        }
+        a{
+            color: whitesmoke;
+        }
+        body{
+            background-image:url("[[@{/img/background.png}]]");
+            background-repeat:no-repeat;
+            margin: 0px auto;
+        }
+    </style>
+</head>
+<body>
+<div th:include="~{common::header}"></div>
+<div class="center"  >
+    <ul class="homeList">
+        <li>
+            <div class="circle" style="background: #D2B36C"><a th:href="@{/admin/login}">admin</a></div>
+        </li>
+        <li>
+            <div class="circle" style="background: #B74848"><a th:href="@{/librarian/login}">librarian</a></div>
+        </li>
+        <li>
+            <div class="circle" style="background: #34569B"><a th:href="@{/borrower/login}">borrower</a></div>
+        </li>
+    </ul>
+
+</div>
+<div class="center" style="text-align: center;clear: both;position: relative;top: 40px;left: -20px">
+    <a th:href="@{/register}" style="font-size: 18px;color: blue;font-weight: bold">新用户注册</a></div>
+</body>
+
+</html>

@@ -1,16 +1,10 @@
-package data;
+package utility.database;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import af.spring.AfRestData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import af.spring.AfRestData;
-import utility.database.JdbcPool;
+import java.sql.*;
 
 @Controller
 public class DatabaseTest {
@@ -28,6 +22,8 @@ public class DatabaseTest {
 			}
 			while(rs.next())
 			{
+
+
 				for (int i = 1; i <= res.getColumnCount(); i++) {
 					System.out.printf("%-12s", rs.getObject(i));
 					

@@ -31,9 +31,6 @@
   </servlet-mapping>
   <!--把applicationContext.xml加入到配置文件中-->
 
-  <session-config>
-    <session-timeout>15</session-timeout>
-  </session-config>
 
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
