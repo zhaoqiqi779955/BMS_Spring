@@ -31,7 +31,7 @@ public class AdminFilter implements Filter
 
         String uri = request.getRequestURI();
 
-        if(uri.endsWith("login")||uri.endsWith("login.do")){
+        if(uri.contains("login")){
             chain.doFilter(req, resp);
             return;
         }
@@ -46,9 +46,7 @@ public class AdminFilter implements Filter
 
             //MVC请求： 返回302重定向
             response.sendRedirect(request.getContextPath()
-                    + "/admin/login"
-                    + "?returnUrl=" + uri
-            );
+                    + "/admin/login");
             return;
         }
 

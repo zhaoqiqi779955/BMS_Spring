@@ -19,7 +19,7 @@
     <init-param>
       <!--配置dispatcher.xml作为mvc的配置文件-->
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:spring-mvc.xml</param-value>
+      <param-value>classpath:applicationContext.xml</param-value>
     </init-param>
 <!--    每次启动创建一次-->
     <load-on-startup>1</load-on-startup>
@@ -43,5 +43,18 @@
       filter.FirstServletContextListener
     </listener-class>
   </listener>
-
+<!--  使用mvc自带过滤器-->
+  <filter>
+    <filter-name>encoding</filter-name>
+    <filter-class>
+      org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encoding</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

@@ -7,6 +7,7 @@ import data.Admin;
 import data.Book;
 import data.Borrower;
 import data.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import service.AdminService;
 import service.BookService;
-import service.BorrowerService;
+import service.BorrowerServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,8 @@ import java.util.List;
 @Controller
 public class AdminController
 {
+	@Autowired
+	BorrowerServiceImpl borrowerServiceImpl;
 	@GetMapping("/admin/login")
 	public String login()
 	{
@@ -78,7 +81,7 @@ public String goReservation(HttpSession session,Model model) {
 	int lenBorrowers = borrowers.size();
 	for(int i = 0 ; i < lenBorrowers ; i++){
 		Borrower tmpBorrower = borrowers.get(i);
-		List<Reservation> tmpReservations = BorrowerService.getReservation(tmpBorrower.getBorrower_id(),1);
+		List<Reservation> tmpReservations = BorrowerServiceImpl.getReservation(tmpBorrower.getBorrower_id(),1);
 		reservations.addAll(tmpReservations);
 	}
 	model.addAttribute("reservation", reservations);
@@ -91,7 +94,7 @@ public String goReservation(HttpSession session,Model model) {
 	{
 		Integer book_id=jreq.getInteger("book_id");
 		Integer userID=jreq.getInteger("borrower_id");
-		int res= BorrowerService.borrowBook(userID,book_id);
+		int res= BorrowerServiceImpl.borrowBook(userID,book_id);
 		if(res==0){
 			return new AfRestData();
 		}
@@ -103,7 +106,7 @@ public String goReservation(HttpSession session,Model model) {
 		System.out.println("还书");
 		Integer book_id=jreq.getInteger("book_id");
 		Integer userID=jreq.getInteger("borrower_id");
-		int res= BorrowerService.returnBook(userID,book_id);
+		int res= BorrowerServiceImpl.returnBook(userID,book_id);
 		if(res==1){
 			return new AfRestData();
 		}
@@ -295,7 +298,7 @@ public String goReservation(HttpSession session,Model model) {
 	public Object borrowerQuery(Model model, HttpServletRequest request)
 	{
 		String borrower_id = request.getParameter("borrower_id");
-		Borrower borrower = BorrowerService.getBorrower(Integer.valueOf(borrower_id));
+		Borrower borrower = borrowerServiceImpl.getBorrower(Integer.valueOf(borrower_id));
 		if(borrower==null){
 			return new AfRestError("没有找到用户");
 		}
@@ -315,10 +318,10 @@ public String goReservation(HttpSession session,Model model) {
 	public Object deleteBorrower(@RequestBody JSONObject jreq){
 		String borrower_id = jreq.getString("borrower_id");
 		int id = Integer.valueOf(borrower_id);
-		if(BorrowerService.isExistent(id)==false){
+		if(BorrowerServiceImpl.isExistent(id)==false){
 			return new AfRestError("删除用户失败，该用户不存在");
 		}else{
-			BorrowerService.delete(Integer.valueOf(borrower_id));
+			BorrowerServiceImpl.delete(Integer.valueOf(borrower_id));
 		}
 
 		System.out.println("正在删除借书者。。。。");
@@ -355,7 +358,7 @@ public String goReservation(HttpSession session,Model model) {
 		borrower.setMaxBook(maxBook);
 		borrower.setBorrowedNum(Byte.valueOf("0"));
 
-		BorrowerService.add(borrower);
+		borrowerServiceImpl.add(borrower);
 
 		System.out.println(borrower.toString());
 		return "admin/addBorrower";

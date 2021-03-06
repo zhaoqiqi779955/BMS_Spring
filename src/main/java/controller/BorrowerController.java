@@ -4,13 +4,14 @@ import af.spring.AfRestData;
 import af.spring.AfRestError;
 import com.alibaba.fastjson.JSONObject;
 import data.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import service.BookService;
-import service.BorrowerService;
+import service.BorrowerServiceImpl;
 import utility.Util;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ import java.util.Map;
 @Controller
 public class BorrowerController {
 
+    @Autowired
+    BorrowerServiceImpl borrowerServiceImpl;
     static  Map<Integer,String> message=new HashMap<>();
     static {
         message.put(-1,"服务器异常");
@@ -44,7 +47,7 @@ public class BorrowerController {
 
          String tem;
          Integer id=jreq.getInteger("id");
-         if(BorrowerService.isExistent(id)){
+         if(BorrowerServiceImpl.isExistent(id)){
              return new AfRestError("账号已存在");
          }
          String name=jreq.getString("name");
@@ -79,7 +82,7 @@ public class BorrowerController {
             session.setAttribute("path",String.format("%010d",id)+"/"+fileName);
         }
 
-        if(!(BorrowerService.add(borrower)))
+        if(!(borrowerServiceImpl.add(borrower)))
         {
             return  new AfRestError("注册失败");
         };
@@ -109,7 +112,7 @@ public class BorrowerController {
     public Object borrowerLogin(@RequestBody JSONObject jreq, Model model, HttpServletRequest req, HttpSession session){
         Integer userID = jreq.getInteger("userID");
         String password = jreq.getString("password");
-        Borrower borrower = BorrowerService.getBorrower(userID);
+        Borrower borrower = borrowerServiceImpl.getBorrower(userID);
 
         if(borrower==null){
             return  new AfRestError("用户不存在");
@@ -131,7 +134,8 @@ public class BorrowerController {
     public Object borrowerInfo(HttpSession session,Model model){
         Integer borrower_id = (Integer)session.getAttribute("userID");
         if(borrower_id==null) return new AfRestError("");
-        Borrower borrower = BorrowerService.getBorrower(borrower_id);
+        Borrower borrower = borrowerServiceImpl.getBorrower(borrower_id);
+        System.out.println("id值"+borrower.getBorrower_id());
         model.addAttribute("borrower",borrower);
         return "borrower/info";
     }
@@ -142,7 +146,7 @@ public class BorrowerController {
     public Object borrowerUpdate(HttpSession session, HttpServletRequest request){
         Integer borrower_id = (Integer)session.getAttribute("userID");
         if(borrower_id==null) return new AfRestError("");
-        Borrower borrower = BorrowerService.getBorrower(borrower_id);
+        Borrower borrower = borrowerServiceImpl.getBorrower(borrower_id);
 
         String name = request.getParameter("name");
         if(!name.equals("")){
@@ -172,7 +176,7 @@ public class BorrowerController {
                 borrower.setSex(false);
             }
         }
-        BorrowerService.update(borrower);
+        BorrowerServiceImpl.update(borrower);
         
         return "borrower/updateInfo";
     }
@@ -188,7 +192,7 @@ public class BorrowerController {
     @GetMapping("/borrower/reservation")
     public Object reserve(HttpSession session,Model model){
         Integer borrower_id = (Integer)session.getAttribute("userID");
-        List<Reservation> reservation = BorrowerService.getReservation(borrower_id,1);
+        List<Reservation> reservation = BorrowerServiceImpl.getReservation(borrower_id,1);
         model.addAttribute("reservation", reservation);
         return "borrower/reservation";
     }
@@ -213,7 +217,7 @@ public class BorrowerController {
         Integer book_id=jreq.getInteger("book_id");
         Integer userID=(Integer)session.getAttribute("userID");
         if (userID==null) return new AfRestError(-2,"未登录");
-        int res=BorrowerService.reserveBook(userID,book_id);
+        int res= BorrowerServiceImpl.reserveBook(userID,book_id);
         if(res==0){
             return new AfRestData();
         }
@@ -228,7 +232,7 @@ public class BorrowerController {
     {
         Integer reservation_id = jreq.getInteger("reservation_id");
         try{
-            BorrowerService.removeReservation(reservation_id);
+            BorrowerServiceImpl.removeReservation(reservation_id);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -240,7 +244,7 @@ public class BorrowerController {
     public String borrowInfo(HttpSession session,Model model)
     {
         Integer borrower_id = (Integer)session.getAttribute("userID");
-        List<Borrow> reservation = BorrowerService.getBorrow(borrower_id,1);
+        List<Borrow> reservation = BorrowerServiceImpl.getBorrow(borrower_id,1);
         model.addAttribute("reservation", reservation);
         return "borrower/borrowInfo";
     }

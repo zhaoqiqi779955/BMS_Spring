@@ -41,8 +41,7 @@
         <property name="idleConnectionTestPeriod">60</property>
         <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->
         <property name="maxStatements">100</property>
-        <!--maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。默认值: 0 -->
-        <property name="maxStatementsPerConnection"></property>
+
 
     </default-config>
 
