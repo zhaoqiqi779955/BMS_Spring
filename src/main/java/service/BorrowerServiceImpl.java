@@ -95,7 +95,7 @@ public class BorrowerServiceImpl  implements BorrowerService{
     public static  int reserveBook(int borrower_id,int book_id)
     {
 
-        String sql="select reserve("+borrower_id+","+book_id+","+ LibrarySystem.RESERVATION_TIME+")";
+        String sql="select reserve("+borrower_id+","+book_id+","+ LibrarySystem.RESERVATION_VALIDITY_TIME +")";
         try {
             String [] res=AfSimpleDB.get(sql);
             return Integer.parseInt(res[0]);

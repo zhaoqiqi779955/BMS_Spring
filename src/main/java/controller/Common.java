@@ -144,6 +144,8 @@ public class Common {
         return new AfRestError();
       
     }
+/*
+* 上传图片*/
     @RequestMapping("/photo/upload.do")
     public Object upload(HttpServletRequest request,HttpSession session) throws Exception
     {
