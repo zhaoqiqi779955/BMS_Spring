@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace很重要-->
+
+
+<mapper namespace="dao.BorrowMapper">
+    <!--配置二级缓存-->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
+    
+    <select id="queryByPage" resultType="borrow"  statementType="CALLABLE" parameterMap="queryMap">
+        call getBorrow(?,?,?);
+    </select>
+    <parameterMap id="queryMap" type="map">
+        <parameter property="borrower_id" jdbcType="INTEGER" mode="IN"></parameter>
+        <parameter property="start" jdbcType="INTEGER" mode="IN"></parameter>
+        <parameter property="pageSize" jdbcType="INTEGER" mode="IN"></parameter>
+    </parameterMap>
+</mapper>

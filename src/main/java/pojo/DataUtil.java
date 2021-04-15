@@ -1,4 +1,4 @@
-package data;
+package pojo;
 
 public class DataUtil {
     public  static boolean isNull(Object obj){

@@ -1,4 +1,4 @@
-package data;
+package pojo;
 
 import af.sql.annotation.AFCOLUMNS;
 import af.sql.annotation.AFTABLE;
@@ -76,5 +76,19 @@ public class Borrow {
 
     public void setReturned(boolean returned) {
         isReturned = returned;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Borrow{");
+        sb.append("borrow_id=").append(borrow_id);
+        sb.append(", date=").append(date);
+        sb.append(", borrower_id=").append(borrower_id);
+        sb.append(", book_id=").append(book_id);
+        sb.append(", expire=").append(expire);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", isReturned=").append(isReturned);
+        sb.append('}');
+        return sb.toString();
     }
 }

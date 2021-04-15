@@ -3,10 +3,6 @@ package controller;
 import af.spring.AfRestData;
 import af.spring.AfRestError;
 import com.alibaba.fastjson.JSONObject;
-import data.Admin;
-import data.Book;
-import data.Borrower;
-import data.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import service.AdminService;
+import pojo.Admin;
+import pojo.Book;
+import pojo.Borrower;
+import pojo.Reservation;
+import service.AdminServiceImpl;
 import service.BookService;
 import service.BorrowerServiceImpl;
 
@@ -29,6 +29,10 @@ public class AdminController
 {
 	@Autowired
 	BorrowerServiceImpl borrowerServiceImpl;
+	@Autowired
+	BookService bookService;
+	@Autowired
+	AdminServiceImpl adminService;
 	@GetMapping("/admin/login")
 	public String login()
 	{
@@ -41,11 +45,11 @@ public class AdminController
 	{
 		Integer userID = jreq.getInteger("userID");
 		String password = jreq.getString("password");
-		Admin admin= AdminService.getAdmin(userID);
+		Admin admin= adminService.getAdmin(userID);
 		if(admin==null){
 			return  new AfRestError("用户不存在");
 		}
-		if(!admin.getPw().equals(password)){
+		if(!password.equals(admin.getPw())){
 			return new AfRestError("密码错误");
 		}
 		// 登录成功
@@ -76,12 +80,12 @@ public String goWorkShop()
 */
 @GetMapping("/librarian/reservation")
 public String goReservation(HttpSession session,Model model) {
-	List<Borrower> borrowers = AdminService.getAllBorrowers();
+	List<Borrower> borrowers = borrowerServiceImpl.getAllBorrowers();
 	List<Reservation> reservations = new ArrayList<>();
 	int lenBorrowers = borrowers.size();
 	for(int i = 0 ; i < lenBorrowers ; i++){
 		Borrower tmpBorrower = borrowers.get(i);
-		List<Reservation> tmpReservations = BorrowerServiceImpl.getReservation(tmpBorrower.getBorrower_id(),1);
+		List<Reservation> tmpReservations = borrowerServiceImpl.getReservation(tmpBorrower.getBorrower_id(),1);
 		reservations.addAll(tmpReservations);
 	}
 	model.addAttribute("reservation", reservations);
@@ -94,7 +98,7 @@ public String goReservation(HttpSession session,Model model) {
 	{
 		Integer book_id=jreq.getInteger("book_id");
 		Integer userID=jreq.getInteger("borrower_id");
-		int res= BorrowerServiceImpl.borrowBook(userID,book_id);
+		int res= borrowerServiceImpl.borrowBook(userID,book_id);
 		if(res==0){
 			return new AfRestData();
 		}
@@ -106,7 +110,7 @@ public String goReservation(HttpSession session,Model model) {
 		System.out.println("还书");
 		Integer book_id=jreq.getInteger("book_id");
 		Integer userID=jreq.getInteger("borrower_id");
-		int res= BorrowerServiceImpl.returnBook(userID,book_id);
+		int res= borrowerServiceImpl.returnBook(userID,book_id);
 		if(res==1){
 			return new AfRestData();
 		}
@@ -120,7 +124,7 @@ public String goReservation(HttpSession session,Model model) {
 	{
 
 		Integer userID = (Integer)session.getAttribute("userID");
-		Admin admin = AdminService.getAdmin(userID);
+		Admin admin = adminService.getAdmin(userID);
 		model.addAttribute("admin",admin);
 		System.out.println("准备展示的个人信息。。。。。");
 		return "admin/info";
@@ -134,7 +138,7 @@ public String goReservation(HttpSession session,Model model) {
     public Object adminUpdate(HttpSession session,HttpServletRequest request){
         Integer admin_id = (Integer)session.getAttribute("userID");
         if(admin_id == null) return new AfRestError("");
-        Admin admin = AdminService.getAdmin(admin_id);
+        Admin admin = adminService.getAdmin(admin_id);
         String name = request.getParameter("name");
         if(!name.equals("")){
             admin.setName(name);
@@ -163,7 +167,7 @@ public String goReservation(HttpSession session,Model model) {
                 admin.setSex(false);
             }
         }
-        AdminService.update(admin);
+        adminService.update(admin);
         return "admin/updateInfo";
     }
 	/*
@@ -180,7 +184,7 @@ public String goReservation(HttpSession session,Model model) {
 	{
 
 		System.out.println(request.getParameter("title"));
-		List<Book> books = BookService.findOnWord("",request.getParameter("title"),"","",1,5);
+		List<Book> books = bookService.findOnWord("",request.getParameter("title"),"","",1,5);
 		if(books==null ||  books.size()==0){
 			return new AfRestError("没有找到书籍");
 		}
@@ -216,7 +220,7 @@ public String goReservation(HttpSession session,Model model) {
 		book.setDescription(desc);
 		book.setISBN(ISBN);
 
-		boolean res=BookService.add(book);
+		boolean res=bookService.add(book);
 		if(!res) return new AfRestError("添加失败");
 		return "admin/addBook";
 	}
@@ -232,12 +236,9 @@ public String goReservation(HttpSession session,Model model) {
 	public Object deleteBook(@RequestBody JSONObject jreq){
 		String book_id = jreq.getString("book_id");
 		int id = Integer.parseInt(book_id);
-		if(BookService.isExistent(id)==false){
+		if(bookService.delete(Integer.parseInt(book_id)) == false){
 			return new AfRestError("删除书籍失败，没有找到该书籍");
-		}else{
-			BookService.delete(Integer.parseInt(book_id));
 		}
-
 		System.out.println("正在删除书籍。。。。");
 		return new AfRestData("");
 	}
@@ -248,7 +249,7 @@ public String goReservation(HttpSession session,Model model) {
     public String goUpdateBook(){return "/admin/updateBook";}
     @PostMapping("admin/updateBook")
     public Object updateBook(HttpSession session, HttpServletRequest request){
-        Book book = BookService.getBook(Integer.parseInt(request.getParameter("book_id")));
+        Book book = bookService.getBook(Integer.parseInt(request.getParameter("book_id")));
         String title = request.getParameter("title");
         System.out.println(book.getTitle());
         System.out.println(book.getAuthor());
@@ -282,7 +283,7 @@ public String goReservation(HttpSession session,Model model) {
             book.setDescription(desc);
         }
         System.out.println(book.getPrice());
-        BookService.update(book);
+        bookService.update(book);
         return "admin/updateBook";
     }
 	/*
@@ -318,10 +319,10 @@ public String goReservation(HttpSession session,Model model) {
 	public Object deleteBorrower(@RequestBody JSONObject jreq){
 		String borrower_id = jreq.getString("borrower_id");
 		int id = Integer.valueOf(borrower_id);
-		if(BorrowerServiceImpl.isExistent(id)==false){
+		if(borrowerServiceImpl.isExistent(id)==false){
 			return new AfRestError("删除用户失败，该用户不存在");
 		}else{
-			BorrowerServiceImpl.delete(Integer.valueOf(borrower_id));
+			bookService.delete(Integer.valueOf(borrower_id));
 		}
 
 		System.out.println("正在删除借书者。。。。");

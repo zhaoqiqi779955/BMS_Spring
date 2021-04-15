@@ -1,4 +1,4 @@
-package data;
+package pojo;
 
 import af.sql.annotation.AFCOLUMNS;
 import af.sql.annotation.AFTABLE;

@@ -1,4 +1,4 @@
-package data;
+package pojo;
 
 public class LibrarySystem {
     public static final int MAX_Book=5;//最大借书量

@@ -6,6 +6,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/admin/addBook.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/admin/login.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/book/list.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/book" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/borrower/register.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/borrower" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/borrower/reservation.html" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/borrower" />
       </map>
     </option>

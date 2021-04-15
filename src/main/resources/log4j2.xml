@@ -5,7 +5,7 @@
 <configuration status="OFF" monitorInterval="60">
     <Properties>
         <!-- （*必须,各应用需要修改） 部署应用的名称,命名规则 :全部小写字母、中短横线、数字,与微服务命名,disconf中命名一致 -->
-        <property name="APPNAME">mybatisTest</property>
+        <property name="APPNAME">BMS</property>
         <!-- （各应用需要修改）部署应用的端口号，用于一台服务器部署多台应用的情况,如果不需要，保持默认 -->
         <property name="PORT">${sys:crtServerPort:-8080}</property>
         <!-- （各应用需要修改）日志文件本地存放目录路径 建议各个环境跟生产环境统一起来,方便维护 -->
@@ -18,7 +18,7 @@
         <!-- *必须并强制遵守 日志文件的编码 -->
         <property name="log_charset">UTF-8</property>
         <!-- *必须并强制遵守 日志格式说明： |日志时间|线程id|端口号|应用名称|类名|方法名|日志级别|traceId |输入参数|输出参数|耗时|任意多个扩展字段|具体打印的msg内容然后换行 -->
-        <property name="log_pattern">|%d{yyyy-MM-dd HH:mm:ss.SSS}|%t|${PORT}|${APPNAME}|%logger%M|%p|%X{MDCCRT_GUID_TRACEID}###+%X{MDCCRT_EXTENTS}-###|##+%X{MDCCRT_INPUT_PARAM}-##|##+%X{MDCCRT_OUTPUT_PARAM}-##|%X{MDCCRT_COST_TIME}|%m%n</property>
+        <property name="log_pattern">|%d{yyyy-MM-dd HH:mm:ss.SSS}|%t|${PORT}|${APPNAME}|%logger%M|%p|%m%n</property>
     </Properties>
     <appenders>
         <!-- 用来控制台输出 -->
@@ -43,9 +43,10 @@
             <DefaultRolloverStrategy max="1000" />
             <Filters>
                 <!-- 显示所有信息 -->
-                <ThresholdFilter onMismatch="DENY" onMatch="ACCEPT" level="TRACE" />
+                <ThresholdFilter onMismatch="DENY" onMatch="ACCEPT" level="INFO" />
             </Filters>
         </RollingRandomAccessFile>
+<!--        MYSQL-->
         <RollingRandomAccessFile name="sqlLog"
                                  filePattern="${logBaseFolder}/%d{yyyy-MM-dd}/${logFileNamePrefix}-sql-%d{yyyyMMdd-HH}.%i.log.gz"
                                  fileName="${logBaseFolder}/${logFileNamePrefix}-sql.log"
@@ -60,7 +61,7 @@
             <DefaultRolloverStrategy max="1000" />
             <Filters>
                 <!-- 显示所有信息 -->
-                <ThresholdFilter onMismatch="DENY" onMatch="ACCEPT" level="TRACE" />
+                <ThresholdFilter onMismatch="DENY" onMatch="ACCEPT" level="DEBUG" />
             </Filters>
         </RollingRandomAccessFile>
 
@@ -85,63 +86,21 @@
     <!--然后定义logger，只有定义logger并引入的appender，appender才会生效-->
     <!--root：用于指定项目的根日志，如果没有单独指定Logger，则会使用root作为默认的日志输出-->
     <loggers>
-        <!-- 各应用按实际情况自行定义相关类的输出级别 -->
-        <AsyncLogger name="com.crn.member" level="DEBUG" />
-
-
-        <AsyncLogger name="com.apache" level="WARN" />
-        <AsyncLogger name="com.ibm.sc" level="WARN" />
-        <AsyncLogger name="org.apache.ibatis.jdbc" level="WARN" />
-
-
-        <AsyncLogger name="org.apache.zookeeper.ClientCnxn" level="WARN" />
-        <AsyncLogger name="org.apache.zookeeper.ZooKeeper" level="WARN" />
-        <AsyncLogger name="org.apache.commons.httpclient.util.IdleConnectionHandler" level="WARN" />
-
-
-        <AsyncLogger name="org.apache.http.client.protocol.RequestAddCookies" level="WARN" />
-
-
-        <AsyncLogger name="org.apache.http.client.protocol.RequestAuthCache" level="WARN" />
-        <AsyncLogger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="WARN" />
-        <AsyncLogger name="org.apache.http.impl.execchain.MainClientExec" level="WARN" />
-        <AsyncLogger name="org.apache.http.headers" level="WARN" />
-        <AsyncLogger name="org.apache.http.wire" level="WARN" />
-
-
-        <AsyncLogger name="org.apache.activemq.transport.AbstractInactivityMonitor" level="WARN" />
-
-
-        <AsyncLogger name="com.alibaba.dubbo.remoting.transport.DecodeHandler" level="WARN" />
-        <AsyncLogger name="com.alibaba.dubbo.monitor.dubbo.DubboMonitor" level="OFF" />
-        <AsyncLogger name="com.alibaba.dubbo.remoting.exchange.support.header.HeartbeatHandler" level="WARN" />
-        <AsyncLogger name="com.alibaba.dubbo.remoting.exchange.support.header.HeartBeatTask" level="WARN" />
-        <AsyncLogger name="com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry" level="WARN" />
-        <AsyncLogger name="com.alibaba.dubbo.config.AbstractConfig" level="WARN" />
-
-
-        <AsyncLogger name="com.baidu.disconf.client.config.inner.DisInnerConfigHelper" level="WARN" />
-        <AsyncLogger name="com.baidu.disconf.client.config.ConfigMgr" level="WARN" />
-        <AsyncLogger name="com.baidu.disconf.core.common.utils.ClassLoaderUtil" level="WARN" />
-        <AsyncLogger name="com.baidu.disconf.core.common.utils.http.HttpClientUtil" level="WARN" />
-
-
-        <AsyncLogger name="org.springframework" level="WARN" />
-        <AsyncLogger name="RocketmqRemoting" level="WARN" />
-        <AsyncLogger name="RocketmqClient" level="WARN" />
-        <AsyncLogger name="org.apache.kafka" level="WARN" />
 <!--        配置mysql记录的位置,可以具体到类mapper，或者使用包-->
         <AsyncLogger name="dao" level="DEBUG" >
             <appender-ref ref="console"></appender-ref>
             <appender-ref ref="sqlLog"></appender-ref>
         </AsyncLogger>
+        <AsyncLogger name="service" level="INFO">
+            <appender-ref ref="console" level="INFO"></appender-ref>
+        </AsyncLogger>
 
-<!--设置日志过滤级别-->
-        <asyncRoot level="DEBUG">
+<!--  root为默认输出日志   -->
+        <asyncRoot level="INFO">
 <!--             各应用自行调整，日志输出至文件，自动按时间、按文件大小进行归档 ,生产环境调默认为INFO，如有特殊需求，在disconf动态调级 -->
             <appender-ref level="DEBUG" ref="all" />
             <!-- 日志输出至Console，仅在IDE开发时打开方便开发人员，部署到服务器之后必须置为OFF，level设置为OFF表示禁用Console控制台日志输出 -->
-            <appender-ref level="OFF" ref="console" />
+            <appender-ref level="Warn"   ref="console" />
             <!-- 异常日志，不用改动 -->
             <appender-ref level="ERROR" ref="errorLog" />
         </asyncRoot>

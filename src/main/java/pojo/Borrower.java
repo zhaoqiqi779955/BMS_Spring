@@ -1,4 +1,4 @@
-package data;
+package pojo;
 
 import af.sql.annotation.AFCOLUMNS;
 import af.sql.annotation.AFTABLE;
@@ -114,5 +114,24 @@ public class Borrower {
 
     public void setBorrowedNum(Byte borrowedNum) {
         this.borrowedNum = borrowedNum;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Borrower{");
+        sb.append("borrower_id=").append(borrower_id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", sex=").append(sex);
+        sb.append(", birth=").append(birth);
+        sb.append(", adr='").append(adr).append('\'');
+        sb.append(", path='").append(path).append('\'');
+        sb.append(", tel='").append(tel).append('\'');
+        sb.append(", pw='").append(pw).append('\'');
+        sb.append(", badRecord='").append(badRecord).append('\'');
+        sb.append(", level=").append(level);
+        sb.append(", maxBook=").append(maxBook);
+        sb.append(", borrowedNum=").append(borrowedNum);
+        sb.append('}');
+        return sb.toString();
     }
 }

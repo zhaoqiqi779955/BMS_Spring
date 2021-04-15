@@ -112,7 +112,7 @@
         // req.username = $('.form .username').val().trim();
         // req.password = $('.form .password').val().trim();
         req.title = $('.form-control').val().trim();
-        Af.rest('[[@{/borrower/queryBooks}]]', req, function (data) {
+        Af.rest('[[@{/borrower/queryBooks}]]', req, function (pojo) {
             layer.msg('成功', {
                 time: 1000,
                 end: function () {
@@ -125,7 +125,7 @@
     {
         var req = {};
         req.book_id=book_id;
-        Af.rest('[[@{/borrower/reserve}]]', req, function (data) {
+        Af.rest('[[@{/borrower/reserve}]]', req, function (pojo) {
             layer.msg('成功', {
                 time: 1000,
                 end: function () {

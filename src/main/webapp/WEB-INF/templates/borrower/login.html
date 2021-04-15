@@ -61,7 +61,7 @@
             req.userID = $('.form .userID').val().trim();
             req.password = $('.form .password').val().trim();
 
-            Af.rest('[[@{/borrower/login.do}]]', req, function (data) {
+            Af.rest('[[@{/borrower/login.do}]]', req, function (pojo) {
                 layer.msg('成功', {
                     time: 1000,
                     end: function () {
@@ -96,7 +96,7 @@
     {
         var req = {};
         req.code = $('.form .code').val().trim();
-        Af.rest('[[@{/code.do}]]', req, function(data){
+        Af.rest('[[@{/code.do}]]', req, function(pojo){
             isrigh=true;
             layer.msg ('正确',{
                 time:1000,
@@ -121,7 +121,7 @@
 
         req.keyWord=$('.search .search-info').val().trim();
         alert(req.keyWord);
-        Af.rest('[[@{/book/search}]]', req, function(data){
+        Af.rest('[[@{/book/search}]]', req, function(pojo){
                 location.href='[[@{/book/list}]]';
             }
         )

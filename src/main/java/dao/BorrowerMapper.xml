@@ -7,5 +7,7 @@
 <mapper namespace="dao.BorrowerMapper">
 <!--配置二级缓存-->
     <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
-
+    <select id="reserve" resultType="_int">
+        select reserve(#{borrower_id},#{book_id},#{duration});
+    </select>
 </mapper>

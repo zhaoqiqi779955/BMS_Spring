@@ -33,6 +33,7 @@ public class LibrarianFilter implements Filter {
 
         if (level == null || Integer.parseInt(level.toString()) <2) {
 
+            System.out.println("被拦截");
             // ?号后面的部分也得带上
             String query = request.getQueryString();
             if (query != null && query.length() > 0)

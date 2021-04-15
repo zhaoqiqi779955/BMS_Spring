@@ -159,7 +159,7 @@
         var req = {
             'borrower_id': id
         };
-        Af.rest('[[@{/admin/deleteBorrower}]]', req, function (data) {
+        Af.rest('[[@{/admin/deleteBorrower}]]', req, function (pojo) {
             layer.msg('成功', {
                 time: 1000,
                 end: function () {

@@ -166,7 +166,7 @@
         var req = {
             'book_id': id
         };
-        Af.rest('[[@{/admin/deleteBook}]]', req, function (data) {
+        Af.rest('[[@{/admin/deleteBook}]]', req, function (pojo) {
             layer.msg('成功', {
                 time: 1000,
                 end: function () {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace很重要-->
+
+
+<mapper namespace="dao.BookMapper">
+    <!--配置二级缓存-->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
+
+   <select id="queryAll" parameterType="map" resultType="book">
+       select * from Book
+       <where>
+           <if test="ISBN != null">
+               ISBN=#{ISBN}
+           </if>
+           <if test="title !=null">
+               and title like concat('%',#{title},'%')
+           </if>
+           <if test="author != null">
+               and author like concat('%',#{author},'%')
+           </if>
+           <if test="category != null">
+               and category like  concat('%',#{category},'%')
+           </if>
+       </where>
+        order by book_id limit #{start}, #{pageSize}
+   </select>
+
+    <select id="queryAnyField"  resultType="book">
+        select * from Book where
+        ISBN=#{filter}
+         or title like concat('%',#{filter},'%')
+        or author like concat('%',#{filter},'%')
+        or category like  concat('%',#{filter},'%')
+        order by book_id limit #{start}, #{pageSize}
+    </select>
+
+    <insert id="add" parameterType="book">
+        insert into book(title,totalNum,presentNum,author,category,price,path,ISBN,description)
+        values (#{title},#{totalNum},#{presentNum},#{author},#{category},#{price},#{path},#{ISBN},#{description});
+    </insert>
+    <update id="update" parameterType="book">
+        update book
+        <set>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="totalNum != null">
+                totalNum=#{totalNum},
+            </if>
+            <if test="presentNum != null">
+                presentNum=#{presentNum},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="category != null">
+                category=#{category},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            <if test="description != null">
+                description=#{description,
+            </if>
+            <if test="ISBN != null">
+                ISBN = #{ISBN}
+            </if>
+        </set>
+        where book_id=#{book_id};
+    </update>
+</mapper>

@@ -1,18 +1,21 @@
 package controller;
 
-import data.Book;
+import pojo.Book;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import service.BookService;
+import service.BookServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 public class BookController {
+    @Autowired
+    BookServiceImpl bookService;
 
     /*
     头部的标题搜索框
@@ -22,7 +25,7 @@ public class BookController {
     {
 
 
-        List<Book> bookList= BookService.findOnKeyWord(filter,pageNumber);
+        List<Book> bookList= bookService.findOnKeyWord(filter,pageNumber);
         model.addAttribute("bookList", bookList);
         return "book/list";
     }
@@ -34,7 +37,7 @@ public class BookController {
         String author=request.getParameter("author");
         String ISBN=request.getParameter("ISBN");
         String category=request.getParameter("category");
-        List<Book> bookList = BookService.findOnWord(category,bookName,author,ISBN,1,5);
+        List<Book> bookList = bookService.findOnWord(category,bookName,author,ISBN,1,5);
         model.addAttribute("bookList", bookList);
         return "book/list";
 

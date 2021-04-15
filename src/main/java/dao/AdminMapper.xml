@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace很重要-->
+
+
+<mapper namespace="dao.AdminMapper">
+    <!--配置二级缓存-->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
+
+    <update id="update" parameterType="admin">
+        update Admin
+        <set>
+            <if test="name != null">
+                name=#{name},
+            </if>
+            <if test="sex != null">
+                sex=#{sex},
+            </if>
+            <if test="adr != null">
+                adr= #{adr},
+            </if>
+            <if test="workTime != null">
+                workTime = #{workTime},
+            </if>
+            <if test="salary != null">
+                salary = #{salary},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="pw != null">
+                pw = #{pw},
+            </if>
+            <if test="path !=null">
+                path =#{path},
+            </if>
+            <if test="tel != null">
+                tel=#{tel}
+            </if>
+        </set>
+        where work_id = #{work_id}
+    </update>
+</mapper>
